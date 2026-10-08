@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <!-- Icono de pestaña (Favicon) -->
+  <link rel="icon" type="image/png" href="preview.png">
+  <!-- Título y descripción para buscadores -->
+  <title>Miel & Canela | Cocina & Taller Dulce</title>
+  <meta name="description" content="Pastelería fina y cocina artesanal en Concepción. Waffles, tortas personalizadas y bocados dulces hechos con amor.">
+
+  <!-- Imagen y datos que muestran WhatsApp, Google y redes sociales -->
+  <meta property="og:title" content="Miel & Canela | Cocina & Taller Dulce">
+  <meta property="og:description" content="Descubre nuestra carta y haz tu pedido directo a nuestro taller dulce.">
+  <meta property="og:image" content="preview.jpg">
+  <meta property="og:type" content="website">
+
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastelería & Cocina Artesanal</title>
+  
+  <!-- Tipografías elegantes de Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Archivo CSS externo -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <!-- Navegación -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <span class="brand-sub">Cocina & Taller Dulce</span>
+        <span class="brand-title">Miel & Canela</span>
+      </a>
+
+<nav class="nav-links">
+  <a href="#catalogo">Nuestra Carta</a>
+  <a href="#eventos">Eventos Especiales</a>
+  <a href="opiniones.html">Opiniones de Clientes</a> <!-- 👈 Nuevo enlace -->
+  <!--s<a href="#nosotros">Nosotros</a>-->
+</nav>
+
+      <button class="cart-trigger-btn" id="openCartBtn" aria-label="Abrir carrito">
+        🛒 Canasta
+        <span class="cart-badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="pill-badge">✨ Horneado con amor artesanal</span>
+      <h1>Repostería fina & cocina casera para celebrar la vida</h1>
+      <p>Sabores frescos, ingredientes reales y presentaciones llenas de dedicación. Desde tortas personalizadas hasta brunchs y bocados únicos.</p>
+      <div class="hero-cta-group">
+        <a href="#catalogo" class="btn btn-primary">Ver Menú & Pedir</a>
+        <!--S<a href="#eventos" class="btn btn-outline">Cotizar Eventos</a>-->
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <!-- Sección Catálogo -->
+  <main class="menu-section" id="catalogo">S
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Nuestra Carta</span>
+        <h2>Descubre Nuestras Creaciones</h2>
+        <p>Selecciona tus favoritos y haz tu encargo directamente con retiro o despacho.</p>
+      </div>
+
+      <!-- Filtros por Categoría -->
+      <div class="filter-pills" id="categoryFilters">
+        <button class="filter-btn active" data-category="todos">Todos</button>
+        <button class="filter-btn" data-category="waffles">Waffles & Cookies</button>
+        <button class="filter-btn" data-category="pasteles">Tortas & Pasteles</button>
+<!--    <button class="filter-btn" data-category="cookies">Desayunos & Bocados</button>
+        <button class="filter-btn" data-category="salados">Salados & Brunch</button> -->
+      </div>
+
+
+
+      <!-- Cuadrícula de Productos -->
+      <div class="product-grid" id="productGrid">
+        <!-- Renderizado dinámico desde productos.js -->
+      </div>
+    </div>
+  </main>
+
+
+
+  <!-- Sección Eventos -->
+  <section class="events-section" id="eventos">
+    <div class="container events-card">
+      <div class="events-info">
+        <span class="section-tag">Celebraciones</span>
+        <h2>¿Tienes alguna duda sobre nuestros servicios?</h2>
+        <p>contacta con nosotros para más información.</p>
+      </div>  
+      <div class="events-action">
+        <a href="https://wa.me/56986593972?text=Hola! Me gustaria saber mas sobre lo que venden!." target="_blank" class="btn btn-whatsapp">
+          Hablar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+<!-- Sección Opiniones / Testimonios -->
+  <section class="testimonials-section" id="opiniones">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Testimonios</span>
+        <h2>Lo que dicen nuestros clientes</h2>
+        <p>El cariño y dedicación reflejado en cada entrega.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <article class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Pedi dos waffles con mi novio y estuvieron deliciosos!"</p>
+          <div class="testimonial-author">
+            <strong>Camila Valenzuela</strong>
+            <span>Cena</span>
+          </div>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Los waffles salvan cualquier once. Todo llega calientito, crujiente y con una presentación hermosa."</p>
+          <div class="testimonial-author">
+            <strong>Matías Morales</strong>
+            <span>Primera vez comprando</span>
+          </div>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"La atención por WhatsApp es súper rápida y amable. Waffles con Helado y chocolate tal como lo pedí. 100% recomendados."</p>
+          <div class="testimonial-author">
+            <strong>Francisca Silva</strong>
+            <span>Waffles</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+  
+  <!-- Pie de página -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-col">
+        <h3>Miel & Canela</h3>
+        <p>Pastelería y comida artesanal creada con pasión y el toque casero de siempre.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Horarios de Entrega</h4>
+        <p>Lunes a Domingo: 18:00 - 23:59 hrs</p>
+        <p>Encargos a todas partes.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <p>Instagram: @Aleecpz</p>
+        <p>WhatsApp: +56986593972</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Drawer Lateral del Carrito -->
+  <div class="cart-backdrop" id="cartBackdrop"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3>Tu Pedido</h3>
+      <button class="close-cart-btn" id="closeCartBtn">&times;</button>
+    </div>
+
+    <div class="cart-items" id="cartItemsList">
+      <!-- Los productos seleccionados se listan aquí -->
+    </div>
+
+<!--
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Total:</span>
+        <span class="cart-total-amount" id="cartTotalDisplay">$0</span>
+      </div>
+
+      <div class="cart-form">
+        <input type="text" id="custName" placeholder="Tu nombre y apellido" required>
+        <input type="text" id="custDate" placeholder="Fecha y hora de entrega/retiro">
+        <input type="text" id="custDate" placeholder="Fecha y hora de entrega/retiro">
+        <textarea id="custNotes" rows="2" placeholder="Detalles o notas (dedicatoria, alergias...)"></textarea>
+        
+        <button class="btn btn-whatsapp-full" id="checkoutWhatsappBtn">
+          Enviar Pedido por WhatsApp
+        </button>
+      </div>
+    </div>
+  </aside>
+-->
+
+
+
+
+<!-- Formulario de pedido dentro del carrito -->
+<div class="cart-form">
+      <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Total:</span>
+        <span class="cart-total-amount" id="cartTotalDisplay">$0</span>
+      </div>
+        <input type="text" id="custName" placeholder="Tu nombre y apellido" required>
+        <!--input type="text" id="custDate" placeholder="Numero de contacto (Ej: +56 9 1234 5678)"-->
+        
+        <!-- Selector de modalidad -->
+        <select id="custDeliveryType" class="cart-input-select">
+          <option value="Despacho a Domicilio">🛵 Despacho a Domicilio</option>
+          <option value="Retiro en Vicuña Mackenna">📍 Vicuña Mackenna 1489</option>
+        </select>
+
+        <!-- Bloque 1: Si elige Despacho (se muestra por defecto) -->
+        <div id="addressGroup">
+          <input type="text" id="custAddress" placeholder="Dirección (Calle, número, depto)">
+          <button type="button" id="geoBtn" class="btn-geo">
+            📍 Usar mi ubicación actual (GPS)
+          </button>
+          <input type="hidden" id="custGeoLink" value="">
+        </div>
+
+        <!-- Bloque 2: Si elige Retiro en Taller (oculto por defecto) -->
+        <div id="pickupGroup" >
+          <input type="tel" id="custPhone" placeholder="Teléfono de contacto (Ej: +56 9 1234 5678)">
+          <p class="pickup-hint">Te avisaremos por WhatsApp o llamada cuando tu encargo esté listo para retirar.</p>
+        </div>
+
+        <textarea id="custNotes" rows="2" placeholder="Detalles (Nro depto, piso, etc.)"></textarea>
+        
+        <button class="btn btn-whatsapp-full" id="checkoutWhatsappBtn">
+          Enviar Pedido por WhatsApp
+        </button>
+      </div>
+  
+
+
+
+  <!-- Importamos los archivos JS al final -->
+  <!-- 1. Los datos de los productos -->
+  <script src="productos.js"></script>
+  <!-- 2. La lógica de la página -->
+  <script src="app.js"></script>
+</body>
+</html>

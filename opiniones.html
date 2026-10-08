@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opiniones & Reseñas - La Petite Dulzura</title>
+  
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Estilos base y de opiniones -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="opiniones.css">
+
+  <!-- Librería de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Barra de navegación simple -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <span class="brand-sub">Cocina & Taller Dulce</span>
+        <span class="brand-title">La Petite Dulzura</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">← Volver al Menú Principal</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container reviews-page-layout">
+    
+    <!-- Columna Izquierda: Formulario para dejar reseña -->
+    <section class="review-form-card">
+      <span class="section-tag">Tu Experiencia</span>
+      <h2>¡Cuéntanos qué te pareció!</h2>
+      <p class="subtitle">Nos encanta leer tus comentarios para seguir mejorando nuestras recetas.</p>
+
+      <form id="reviewForm">
+        <div class="form-group">
+          <label for="revNombre">Tu Nombre o Apodo *</label>
+          <input type="text" id="revNombre" placeholder="Ej: Camila Valenzuela" required>
+        </div>
+
+        <div class="form-group">
+          <label for="revPedido">¿Qué pediste? *</label>
+          <input type="text" id="revPedido" placeholder="Ej: Waffles Tentación + Torta Floral" required>
+        </div>
+
+        <div class="form-group">
+          <label>Calificación *</label>
+          <div class="star-rating" id="starPicker">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+          </div>
+          <input type="hidden" id="revRating" value="5" required>
+        </div>
+
+        <div class="form-group">
+          <label for="revComentario">Tu opinión *</label>
+          <textarea id="revComentario" rows="4" placeholder="¿Qué tal el sabor, textura y presentación?" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-submit" id="submitBtn">Publicar mi opinión</button>
+      </form>
+    </section>
+
+    <!-- Columna Derecha: Muro de Reseñas -->
+    <section class="reviews-feed">
+      <div class="reviews-feed-header">
+        <h2>Experiencias de nuestros clientes</h2>
+        <span id="reviewsCountBadge" class="pill-badge">Cargando opiniones...</span>
+      </div>
+
+      <div class="reviews-list" id="reviewsContainer">
+        <!-- Las reseñas cargadas desde la nube se insertan aquí -->
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // --- 1. CONFIGURACIÓN SUPABASE ---
+    // Pega aquí las credenciales de tu proyecto de Supabase:
+    const SUPABASE_URL = "https://cbuwsnihxglprygvkuoh.supabase.co/rest/v1/";
+    const SUPABASE_KEY = "sb_publishable_2UXXu9R3hHY9mab9siUV-g_NguxbVXw";
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // --- 2. MANEJO DE ESTRELLAS INTERACTIVAS ---
+    let currentRating = 5;
+    const stars = document.querySelectorAll("#starPicker .star");
+    const ratingInput = document.getElementById("revRating");
+
+    function updateStarsDisplay(val) {
+      stars.forEach(s => {
+        if (parseInt(s.dataset.value) <= val) {
+          s.classList.add("active");
+        } else {
+          s.classList.remove("active");
+        }
+      });
+    }
+    updateStarsDisplay(currentRating);
+
+    stars.forEach(s => {
+      s.addEventListener("click", () => {
+        currentRating = parseInt(s.dataset.value);
+        ratingInput.value = currentRating;
+        updateStarsDisplay(currentRating);
+      });
+    });
+
+    // --- 3. CARGAR RESEÑAS DE LA BASE DE DATOS ---
+    async function loadReviews() {
+      const container = document.getElementById("reviewsContainer");
+      const badge = document.getElementById("reviewsCountBadge");
+
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error("Error cargando reseñas:", error);
+        container.innerHTML = `<p style="color: red;">No pudimos cargar las opiniones en este momento.</p>`;
+        return;
+      }
+
+      badge.textContent = `${data.length} opiniones registradas`;
+
+      if (data.length === 0) {
+        container.innerHTML = `<p style="color: var(--text-muted); padding: 2rem 0;">Aún no hay opiniones. ¡Sé la primera persona en dejar una!</p>`;
+        return;
+      }
+
+      container.innerHTML = data.map(item => {
+        const starStr = "★".repeat(item.rating) + "☆".repeat(5 - item.rating);
+        const dateObj = new Date(item.created_at);
+        const fechaFormatted = dateObj.toLocaleDateString("es-CL", { day: 'numeric', month: 'short', year: 'numeric' });
+
+        return `
+          <article class="review-item-card">
+            <div class="review-header-row">
+              <span class="review-stars">${starStr}</span>
+              <span class="review-date">${fechaFormatted}</span>
+            </div>
+            <p class="review-comment">"${item.comentario}"</p>
+            <div class="review-author-meta">
+              <strong>${item.nombre}</strong>
+              <span class="ordered-tag">Pidió: ${item.pedido}</span>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    // --- 4. GUARDAR NUEVA RESEÑA ---
+    document.getElementById("reviewForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Publicando...";
+
+      const nuevoNombre = document.getElementById("revNombre").value.trim();
+      const nuevoPedido = document.getElementById("revPedido").value.trim();
+      const nuevoComentario = document.getElementById("revComentario").value.trim();
+
+      const { data, error } = await supabase
+        .from('reviews')
+        .insert([
+          {
+            nombre: nuevoNombre,
+            pedido: nuevoPedido,
+            rating: currentRating,
+            comentario: nuevoComentario
+          }
+        ]);
+
+      if (error) {
+        alert("Ocurrió un error al enviar tu reseña: " + error.message);
+      } else {
+        document.getElementById("reviewForm").reset();
+        currentRating = 5;
+        updateStarsDisplay(5);
+        // Recargar el muro de reseñas
+        await loadReviews();
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Publicar mi opinión";
+    });
+
+    // Cargar opiniones al entrar a la página
+    document.addEventListener("DOMContentLoaded", loadReviews);
+  </script>
+</body>
+</html>
