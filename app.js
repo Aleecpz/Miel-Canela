@@ -66,109 +66,147 @@ function changeQty(productId, delta) {
 // Actualizar la interfaz del carrito
 function updateCartUI() {
   const countBadge = document.getElementById("cartCount");
-  const totalDisplay = document.getElementById("cartTotalDisplay");
+  const totalDisplay = document.getElementById("cartTotalDisplay") || document.querySelector(".cart-total-amount");
   const list = document.getElementById("cartItemsList");
 
+  // Sumar la cantidad real de todos los productos en el carrito
   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
   const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-  countBadge.textContent = totalQty;
-  totalDisplay.textContent = formatMoney(totalPrice);
+  // 👉 Actualizar el número de la burbujita:
+  if (countBadge) {
+    countBadge.textContent = totalQty;
+  }
 
+  // Actualizar el total en dinero ($1.500):
+  if (totalDisplay) {
+    totalDisplay.textContent = formatMoney(totalPrice);
+  }
+
+  // Si no hay productos
   if (cart.length === 0) {
-    list.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin-top: 2rem;">Tu canasta está vacía 🧁</p>`;
+    if (list) list.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin-top: 2rem;">Tu canasta está vacía 🧁</p>`;
     return;
   }
 
-  list.innerHTML = cart.map(item => `
-    <div class="cart-item-row">
-      <div class="cart-item-info">
-        <h4>${item.name}</h4>
-        <p>${formatMoney(item.price)} c/u</p>
+  // Renderizar la lista de productos dentro del carrito
+  if (list) {
+    list.innerHTML = cart.map(item => `
+      <div class="cart-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid var(--border-subtle, #eee);">
+        <div class="cart-item-info">
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.2rem;">${item.name}</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted, #777);">${formatMoney(item.price)} c/u</p>
+        </div>
+        <div class="cart-item-qty" style="display: flex; align-items: center; gap: 0.5rem;">
+          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+          <span style="font-weight: 600;">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+        </div>
       </div>
-      <div class="cart-item-qty">
-        <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
-        <span>${item.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
-      </div>
-    </div>
-  `).join("");
+    `).join("");
+  }
 }
 
 // Controles para abrir y cerrar el carrito
 function openCartDrawer() {
-  document.getElementById("cartDrawer").classList.add("open");
-  document.getElementById("cartBackdrop").classList.add("show");
+  const drawer = document.getElementById("cartDrawer");
+  const backdrop = document.getElementById("cartBackdrop");
+  
+  if (drawer) drawer.classList.add("open");
+  if (backdrop) backdrop.classList.add("show");
+  document.body.classList.add("cart-is-open");
 }
 
 function closeCartDrawer() {
-  document.getElementById("cartDrawer").classList.remove("open");
-  document.getElementById("cartBackdrop").classList.remove("show");
+  const drawer = document.getElementById("cartDrawer");
+  const backdrop = document.getElementById("cartBackdrop");
+  
+  if (drawer) drawer.classList.remove("open");
+  if (backdrop) backdrop.classList.remove("show");
+  document.body.classList.remove("cart-is-open");
 }
 
 // Preparar y enviar mensaje a WhatsApp
 // Actualizar función de checkout
 // Actualizar función de checkout
 function checkoutWhatsApp() {
-  if (cart.length === 0) {
-    alert("Agrega al menos un producto a la canasta.");
-    return;
+  try {
+    // 1. Validar que la canasta tenga productos
+    if (!cart || cart.length === 0) {
+      alert("Agrega al menos un producto a la canasta antes de pedir.");
+      return;
+    }
+
+    // 2. Obtener datos de forma segura (sin fallar si falta un elemento)
+    const name = document.getElementById("custName")?.value.trim() || "";
+    const deliveryType = document.getElementById("custDeliveryType")?.value || "";
+    const address = document.getElementById("custAddress")?.value.trim() || "";
+    const geoLink = document.getElementById("custGeoLink")?.value || "";
+    const floor = document.getElementById("custFloor")?.value.trim() || "";
+    const phone = document.getElementById("custPhone")?.value.trim() || "";
+
+    // Notas según lo que esté escrito en el formulario
+    const notesDelivery = document.getElementById("custNotesDelivery")?.value.trim() || "";
+    const notesPickup = document.getElementById("custNotesPickup")?.value.trim() || "";
+    const generalNotes = document.getElementById("custNotes")?.value.trim() || "";
+    const notes = notesDelivery || notesPickup || generalNotes;
+
+    // 3. Validaciones básicas obligatorias
+    if (!name) {
+      alert("Por favor ingresa tu nombre y apellido.");
+      return;
+    }
+
+    if (!deliveryType) {
+      alert("Por favor selecciona una modalidad de entrega.");
+      return;
+    }
+
+    if (deliveryType === "Despacho a Domicilio" && !address && !geoLink) {
+      alert("Por favor ingresa tu dirección de entrega o comparte tu ubicación GPS.");
+      return;
+    }
+
+    // 4. Número de WhatsApp de destino (prefijo 56 para Chile)
+    const phoneTarget = typeof WHATSAPP_PHONE !== "undefined" ? WHATSAPP_PHONE : "56986593972";
+
+    // 5. Construcción del mensaje
+    let text = `*¡Hola! Quiero hacer un encargo en Miel & Canela* 🍰\n\n`;
+    text += `*Cliente:* ${name}\n`;
+    text += `*Modalidad:* ${deliveryType}\n`;
+
+    if (deliveryType === "Despacho a Domicilio") {
+      if (address) text += `*Dirección:* ${address}\n`;
+      if (geoLink) text += `*Ubicación GPS:* ${geoLink}\n`;
+    } else {
+      if (floor) text += `*Piso / Referencia:* ${floor}\n`;
+      if (phone) text += `*Teléfono de contacto:* ${phone}\n`;
+    }
+
+    if (notes) {
+      text += `*Detalles o notas:* ${notes}\n`;
+    }
+
+    text += `\n*Detalle del pedido:*\n`;
+    cart.forEach(item => {
+      const priceText = typeof formatMoney === "function" 
+        ? formatMoney(item.price * item.qty) 
+        : `$${item.price * item.qty}`;
+      text += `• ${item.qty}x ${item.name} (${priceText})\n`;
+    });
+
+    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    const totalText = typeof formatMoney === "function" ? formatMoney(total) : `$${total}`;
+    text += `\n*Total a pagar: ${totalText}*`;
+
+    // 6. Redirigir a WhatsApp
+    const url = `https://wa.me/${phoneTarget}?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
+
+  } catch (err) {
+    console.error("Error en checkoutWhatsApp:", err);
+    alert("Ocurrió un error al generar el pedido. Revisa la consola del navegador.");
   }
-
-  // Lectura segura: si el elemento no existe en el HTML, no revienta el código
-  const name = document.getElementById("custName")?.value.trim() || "";
-  const date = document.getElementById("custDate")?.value.trim() || "";
-  const notes = document.getElementById("custNotes")?.value.trim() || "";
-  const deliveryType = document.getElementById("custDeliveryType")?.value || "Despacho a Domicilio";
-  const address = document.getElementById("custAddress")?.value.trim() || "";
-  const geoLink = document.getElementById("custGeoLink")?.value || "";
-  const phone = document.getElementById("custPhone")?.value.trim() || "";
-
-
-  if (!name) {
-    alert("Por favor escribe tu nombre para registrar el pedido.");
-    return;
-  }
-
-  if (deliveryType === "Despacho a Domicilio" && !address && !geoLink) {
-    alert("Por favor ingresa tu dirección o usa el botón de ubicación GPS.");
-    return;
-  }
-
-  if (deliveryType === "Departamento Vicuña Mackenna" && !phone) {
-    alert("Por favor ingresa tu número de contacto para coordinar el retiro.");
-    return;
-  }
-
-  // Verificar que la variable del teléfono de WhatsApp exista
-  const targetPhone = typeof WHATSAPP_PHONE !== "undefined" ? WHATSAPP_PHONE : "+56986593972";
-
-  // Armar el mensaje
-  let text = `*¡Hola! Quiero hacer un encargo en Miel & Canela* 🍰\n\n`;
-  text += `*Cliente:* ${name}\n`;
-  if (date) text += `*Fecha/Hora deseada:* ${date}\n`;
-  text += `*Modalidad:* ${deliveryType}\n`;
-
-  if (deliveryType === "Despacho a Domicilio") {
-    if (address) text += `*Dirección:* ${address}\n`;
-    if (geoLink) text += `*Ubicación GPS:* ${geoLink}\n`;
-  } else {
-    text += `*Teléfono de contacto:* ${phone}\n`;
-  }
-
-  if (notes) text += `*Notas:* ${notes}\n`;
-
-  text += `\n*Detalle del pedido:*\n`;
-  cart.forEach(item => {
-    text += `• ${item.qty}x ${item.name} (${formatMoney(item.price * item.qty)})\n`;
-  });
-
-  const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-  text += `\n*Total a pagar: ${formatMoney(total)}*`;
-
-  // Abrir WhatsApp
-  const url = `https://wa.me/${targetPhone}?text=${encodeURIComponent(text)}`;
-  window.open(url, "_blank");
 }
 
 // Ocultar dirección si es retiro + botón GPS
@@ -180,25 +218,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const pickupGroup = document.getElementById("pickupGroup");
   const deliveryHint = document.getElementById("deliveryHint");
 
-  if (deliverySelect) {
-    deliverySelect.addEventListener("change", (e) => {
-      const selected = e.target.value;
+if (deliverySelect) {
+  deliverySelect.addEventListener("change", (e) => {
+    const selected = e.target.value;
 
-      if (selected === "Despacho a Domicilio") {
-        addressGroup.style.display = "block";
-        pickupGroup.style.display = "none";
-        if (deliveryHint) deliveryHint.style.display = "none";
-      } else if (selected === "Retiro en Departamento Vicuña Mackenna") {
-        addressGroup.style.display = "none";
-        pickupGroup.style.display = "block";
-        if (deliveryHint) deliveryHint.style.display = "none";
-      } else {
-        addressGroup.style.display = "none";
-        pickupGroup.style.display = "none";
-        if (deliveryHint) deliveryHint.style.display = "block";
-      }
-    });
-  }
+    if (selected === "Despacho a Domicilio") {
+      addressGroup.style.display = "block";
+      pickupGroup.style.display = "none";
+      if (deliveryHint) deliveryHint.style.display = "none";
+    } else if (selected === "Retiro en Departamento Vicuña Mackenna") {
+      addressGroup.style.display = "none";
+      pickupGroup.style.display = "block";
+      if (deliveryHint) deliveryHint.style.display = "none";
+    } else {
+      addressGroup.style.display = "none";
+      pickupGroup.style.display = "none";
+      if (deliveryHint) deliveryHint.style.display = "block";
+    }
+  });
+}
 
   // Obtener enlace de Google Maps con las coordenadas del cliente
   if (geoBtn) {
@@ -287,3 +325,4 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("cartBackdrop").addEventListener("click", closeCartDrawer);
   document.getElementById("checkoutWhatsappBtn").addEventListener("click", checkoutWhatsApp);
 });
+
