@@ -124,6 +124,7 @@ function checkoutWhatsApp() {
   const geoLink = document.getElementById("custGeoLink")?.value || "";
   const phone = document.getElementById("custPhone")?.value.trim() || "";
 
+
   if (!name) {
     alert("Por favor escribe tu nombre para registrar el pedido.");
     return;
@@ -134,7 +135,7 @@ function checkoutWhatsApp() {
     return;
   }
 
-  if (deliveryType === "Retiro en Vicuña Mackenna" && !phone) {
+  if (deliveryType === "Departamento Vicuña Mackenna" && !phone) {
     alert("Por favor ingresa tu número de contacto para coordinar el retiro.");
     return;
   }
@@ -174,19 +175,27 @@ function checkoutWhatsApp() {
 document.addEventListener("DOMContentLoaded", () => {
   
   // ... resto de tu código existente ...
-
   const deliverySelect = document.getElementById("custDeliveryType");
   const addressGroup = document.getElementById("addressGroup");
   const pickupGroup = document.getElementById("pickupGroup");
+  const deliveryHint = document.getElementById("deliveryHint");
 
   if (deliverySelect) {
     deliverySelect.addEventListener("change", (e) => {
-      if (e.target.value === "Retiro en Vicuña Mackenna") {
-        addressGroup.style.display = "none";
-        pickupGroup.style.display = "block";
-      } else {
+      const selected = e.target.value;
+
+      if (selected === "Despacho a Domicilio") {
         addressGroup.style.display = "block";
         pickupGroup.style.display = "none";
+        if (deliveryHint) deliveryHint.style.display = "none";
+      } else if (selected === "Retiro en Departamento Vicuña Mackenna") {
+        addressGroup.style.display = "none";
+        pickupGroup.style.display = "block";
+        if (deliveryHint) deliveryHint.style.display = "none";
+      } else {
+        addressGroup.style.display = "none";
+        pickupGroup.style.display = "none";
+        if (deliveryHint) deliveryHint.style.display = "block";
       }
     });
   }
@@ -224,13 +233,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const deliverySelect = document.getElementById("custDeliveryType");
   const addressGroup = document.getElementById("addressGroup");
   const geoBtn = document.getElementById("geoBtn");
-  const geoLinkInput = document.getElementById("custGeoLink");
+  const deliveryType = document.getElementById("custDeliveryType")?.value || "";
 
-  // Ocultar campo de dirección si eligen 'Retiro'
-  if (deliverySelect) {
-    deliverySelect.addEventListener("change", (e) => {
-      addressGroup.style.display = e.target.value === "Retiro en Vicuña Mackenna" ? "none" : "block";
-    });
+  if (!deliveryType) {
+    alert("Por favor selecciona una modalidad de entrega (Despacho o Retiro).");
+    return;
   }
 
   // Obtener enlace de Google Maps con las coordenadas del cliente
@@ -280,4 +287,3 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("cartBackdrop").addEventListener("click", closeCartDrawer);
   document.getElementById("checkoutWhatsappBtn").addEventListener("click", checkoutWhatsApp);
 });
-
