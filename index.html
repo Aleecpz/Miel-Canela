@@ -220,43 +220,52 @@
 
 <!-- Formulario de pedido dentro del carrito -->
 <div class="cart-form">
-      <div class="cart-footer">
+            <div class="cart-footer">
       <div class="cart-total-row">
         <span>Total:</span>
         <span class="cart-total-amount" id="cartTotalDisplay">$0</span>
       </div>
+
+        <!-- Nombre -->
         <input type="text" id="custName" placeholder="Tu nombre y apellido" required>
-        <!--input type="text" id="custDate" placeholder="Numero de contacto (Ej: +56 9 1234 5678)"-->
-        
-        <!-- Selector de modalidad -->
+
+        <!-- Selector de modalidad (Empieza en blanco y deshabilitado) -->
         <select id="custDeliveryType" class="cart-input-select">
+          <option value="" selected disabled>- Seleccione una opción -</option>
           <option value="Despacho a Domicilio">🛵 Despacho a Domicilio</option>
-          <option value="Retiro en Vicuña Mackenna">📍 Vicuña Mackenna 1489</option>
+          <option value="Retiro en Departamento Vicuña Mackenna">📍 Retiro en Departamento Vicuña Mackenna</option>
         </select>
 
-        <!-- Bloque 1: Si elige Despacho (se muestra por defecto) -->
-        <div id="addressGroup">
+        <p id="deliveryHint" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+          Selecciona tu modalidad de entrega para ver los campos correspondientes.
+        </p>
+
+        <!-- CAJA 1: Despacho (Oculta con display: none) -->
+        <div id="addressGroup" style="display: none;">
           <input type="text" id="custAddress" placeholder="Dirección (Calle, número, depto)">
           <button type="button" id="geoBtn" class="btn-geo">
             📍 Usar mi ubicación actual (GPS)
           </button>
           <input type="hidden" id="custGeoLink" value="">
+          <textarea id="custNotes" rows="2" placeholder="Detalles o notas (dedicatoria, alergias...)"></textarea>
         </div>
 
-        <!-- Bloque 2: Si elige Retiro en Taller (oculto por defecto) -->
-        <div id="pickupGroup" >
+        <!-- CAJA 2: Retiro (Oculta con display: none) -->
+        <div id="pickupGroup" style="display: none;">
+          <input type="text" id="custFloor" placeholder="Numero de piso o referencia (Ej: 2do piso, depto 3)">
           <input type="tel" id="custPhone" placeholder="Teléfono de contacto (Ej: +56 9 1234 5678)">
-          <p class="pickup-hint">Te avisaremos por WhatsApp o llamada cuando tu encargo esté listo para retirar.</p>
+          <p class="pickup-hint">Te avisaremos por WhatsApp o llamada cuando tu encargo esté listo.</p>
         </div>
 
-        <textarea id="custNotes" rows="2" placeholder="Detalles (Nro depto, piso, etc.)"></textarea>
-        
-        <button class="btn btn-whatsapp-full" id="checkoutWhatsappBtn">
+        <!-- Notas / Comentarios -->
+         <div id="pickupGroup" style="display: none;">
+          <textarea id="custNotes" rows="2" placeholder="Detalles o notas (dedicatoria, alergias...)"></textarea>
+        </div>
+
+        <button class="btn btn-whatsapp-full" id="checkoutWhatsappBtn" onclick="checkoutWhatsApp()">
           Enviar Pedido por WhatsApp
         </button>
       </div>
-  
-
 
 
   <!-- Importamos los archivos JS al final -->
