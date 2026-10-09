@@ -12,5 +12,13 @@ const PRODUCTS = [
     desc: "Waffles crujientes y esponjosos servidos con crema batida, frutillas frescas, galleta Oreo troceada y salsa de chocolate.",
     image: "waffles.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
-  
+  {
+    id: 2,
+    name: "Waffles Tentación platano & Nutella",
+    category: "waffles",
+    price: 1500,
+    tag: "Proximamente",
+    desc: "Waffles crujientes y esponjosos servidos con crema batida, plátano en rodajas, Nutella.",
+    image: "Proximamente.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+  },
 ];
