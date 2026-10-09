@@ -81,8 +81,21 @@ body {
 .nav-links a:hover {
   color: var(--accent-gold);
 }
+/* Estilo base del botón de canasta */
 .cart-trigger-btn {
-  background: var(--text-dark);
+  cursor: pointer;
+  pointer-events: auto !important; /* Asegura que siempre reciba clics */
+  z-index: 1000;                   /* Por encima del contenido y navbar */
+}
+
+/* Solo se oculta cuando el panel lateral está abierto */
+.cart-drawer.open ~ .cart-trigger-btn,
+body.cart-is-open .cart-trigger-btn {
+  display: none;
+}
+
+.cart-trigger-btn {
+  background: var(--text-dark, #2D2825);
   color: #fff;
   border: none;
   padding: 0.6rem 1.2rem;
@@ -92,17 +105,68 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: background 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, background 0.2s ease;
+  z-index: 990;
 }
+
 .cart-trigger-btn:hover {
-  background: var(--primary-hover);
+  transform: scale(1.05);
 }
+
 .cart-badge {
-  background: var(--accent-gold);
+  background: #C59B27;
   color: #fff;
-  padding: 0.1rem 0.5rem;
-  border-radius: 20px;
   font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 50%;
+  text-align: center;
+  padding: 0 4px;
+}
+
+/* =========================================================
+   VERSIÓN FLOTANTE PROFESIONAL ARRIBA A LA DERECHA EN MÓVILES
+   ========================================================= */
+@media (max-width: 768px) {
+  .cart-trigger-btn {
+    position: fixed;        /* Queda siempre visible en pantalla */
+    top: 16px;              /* Separación desde arriba */
+    right: 16px;            /* Separación desde la derecha */
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;     /* Círculo perfecto tipo burbuja */
+    justify-content: center;
+    background: #2D2825;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Ocultamos la palabra "Canasta" en celular para que solo quede el icono */
+  .cart-text {
+    display: none;
+  }
+
+  .cart-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* La insignia con el número montada en la esquina superior derecha del círculo */
+  .cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #C59B27;
+    color: #fff;
+    border: 2px solid #FAF7F2; /* Borde sutil que le da profundidad */
+    font-size: 0.7rem;
+    min-width: 19px;
+    height: 19px;
+    line-height: 15px;
+  }
 }
 
 /* Hero */
@@ -546,16 +610,27 @@ body {
 }
 
 
-/* =========================================
-   ADAPTACIÓN RESPONSIVE PARA CELULARES
-   ========================================= */
+/* ========================================================
+   AJUSTE PERFECTO PARA CELULARES Y DISPOSITIVOS MÓVILES
+   ======================================================== */
+
+/* 1. Evitar cualquier desbordamiento horizontal en el sitio */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 @media (max-width: 768px) {
+  /* 2. Barra de navegación compacta y sin tapar contenido */
+  .navbar {
+    position: relative; /* En móviles es mejor que no sea sticky para que no tape 1/3 de la pantalla */
+    padding: 0.8rem 1rem;
+  }
+
   .nav-container {
-    flex-direction: column; /* Apila logo, links y botón uno sobre otro */
-    gap: 1rem;
+    flex-direction: column;
     align-items: center;
-    text-align: center;
-    padding: 0.5rem 0;
+    gap: 0.6rem;
   }
 
   .brand {
@@ -563,30 +638,88 @@ body {
     text-align: center;
   }
 
-  .brand-title {
-    font-size: 1.4rem;
+  .brand-sub, .brand-tagline {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
   }
 
-  /* Los enlaces se alinean al centro con scroll suave o ajuste automático */
+  .brand-title, .brand-name {
+    font-size: 1.35rem;
+  }
+
+  /* Enlaces de navegación en una sola línea ordenada o en dos parejas */
   .nav-links {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;       /* Si no caben, bajan de forma ordenada */
-    gap: 0.75rem 1.2rem;   /* Espacio cómodo para tocar con el dedo */
-    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.8rem;
+    margin: 0.2rem 0;
   }
 
   .nav-links a {
-    margin: 0;             /* Quitamos los márgenes laterales fijos */
-    font-size: 0.85rem;
-    white-space: nowrap;   /* Evita que "Opiniones de Clientes" se quiebre en dos renglones */
+    margin: 0;
+    font-size: 0.8rem;
+    white-space: nowrap;
   }
 
-  /* El botón de Canasta centrado abajo de los links */
+  /* Botón de Canasta más estilizado */
   .cart-trigger-btn {
-    padding: 0.5rem 1.2rem;
-    font-size: 0.9rem;
+    padding: 0.4rem 1.1rem;
+    font-size: 0.85rem;
   }
-  
+
+  /* 3. Hero / Portada adaptada para que no quede aplastada */
+  .hero {
+    padding: 2.5rem 1.2rem 2.5rem; /* Menos relleno superior e inferior */
+  }
+
+  .hero h1 {
+    font-size: 1.75rem; /* Tamaño proporcional para que no se corte */
+    line-height: 1.25;
+  }
+
+  .hero p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    padding: 0 0.5rem;
+  }
+
+  .hero-cta-group {
+    flex-direction: column; /* Botones uno arriba del otro en celular */
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 280px;
+    margin: 1.5rem auto 0;
+  }
+
+  .hero-cta-group .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* 4. Título de la Carta ("Descubre Nuestras Creaciones") */
+  .section-header h2 {
+    font-size: 1.6rem;
+    line-height: 1.2;
+    padding: 0 1rem;
+    word-break: break-word; /* Evita que palabras largas se salgan */
+  }
+
+  .section-header p {
+    font-size: 0.88rem;
+    padding: 0 1rem;
+  }
+
+  /* 5. Asegurar que el catálogo no se desborde */
+  .product-grid {
+    padding: 0 1rem;
+  }
+}
+
+/* Ocultar la burbuja flotante cuando el carrito lateral esté abierto */
+body:has(.cart-drawer.open) .cart-trigger-btn {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
 }
