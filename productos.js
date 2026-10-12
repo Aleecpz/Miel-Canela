@@ -7,7 +7,7 @@ const PRODUCTS = [
     id: 1,
     name: "Waffles Tentación Oreo & Frutilla",
     category: "waffles",
-    price: 1800,
+    price: 1500,
     tag: "Estrella de la Casa",
     desc: "Waffles crujientes y esponjosos servidos con crema batida, frutillas frescas, galleta Oreo troceada y salsa de chocolate.",
     image: "waffles.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
