@@ -10,7 +10,7 @@ const PRODUCTS = [
     price: 1800,
     tag: "Estrella de la Casa",
     desc: "Waffles crujientes y esponjosos servidos con crema batida, frutillas frescas, galleta Oreo troceada y salsa de chocolate.",
-    image: "img/waffles.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+    image: "waffles.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const PRODUCTS = [
     price: 1500,
     tag: "Proximamente",
     desc: "Waffles crujientes y esponjosos servidos con crema batida, plátano en rodajas, Nutella.",
-    image: "img/Proximamente.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+    image: "Proximamente.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
     {
     id: 3,
@@ -28,7 +28,7 @@ const PRODUCTS = [
     price: 1000,
     tag: "Ultimas Unidades",
     desc: "Coca-Cola de 350ml, refrescante y deliciosa.",
-    image: "img/coca.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+    image: "coca.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
   {
     id: 4,
@@ -37,7 +37,7 @@ const PRODUCTS = [
     price: 1000,
     tag: "Ultimas Unidades",
     desc: "Sprite de 350ml, refrescante y deliciosa.",
-    image: "img/sprite.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+    image: "sprite.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
   {
     id: 5,
@@ -46,6 +46,6 @@ const PRODUCTS = [
     price: 1000,
     tag: "Ultimas Unidades",
     desc: "Fanta de 350ml, refrescante y deliciosa.",
-    image: "img/fanta.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+    image: "fanta.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   }
 ];
