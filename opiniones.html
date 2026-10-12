@@ -3,203 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Opiniones & Reseñas - La Petite Dulzura</title>
+  <title>Opiniones de Clientes | Miel & Canela</title>
   
-  <!-- Tipografías -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Estilos base y de opiniones -->
+  <!-- Estilos principales -->
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="opiniones.css">
-
-  <!-- Librería de Supabase -->
+  
+  <!-- Cargar Supabase JS únicamente -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-  <!-- Barra de navegación simple -->
+  <!-- NAVEGACIÓN COMPACTA -->
   <header class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">
-        <span class="brand-sub">Cocina & Taller Dulce</span>
-        <span class="brand-title">La Petite Dulzura</span>
+    <div class="nav-container" style="display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 1rem;">
+      <a href="index.html" class="brand" style="text-decoration: none; color: inherit;">
+        <span class="brand-sub" style="display: block; font-size: 0.75rem; letter-spacing: 2px; color: #888;">PASTELERÍA & DULCES</span>
+        <h1 class="brand-title" style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin: 0;">Miel & Canela</h1>
       </a>
-      <nav class="nav-links">
-        <a href="index.html">← Volver al Menú Principal</a>
-      </nav>
+      
+      <a href="index.html" class="btn" style="text-decoration: none; padding: 0.6rem 1.2rem; background: #2D2825; color: #fff; border-radius: 50px; font-weight: 600; font-size: 0.85rem;">
+        ← Volver a la Carta
+      </a>
     </div>
   </header>
 
-  <main class="container reviews-page-layout">
-    
-    <!-- Columna Izquierda: Formulario para dejar reseña -->
-    <section class="review-form-card">
-      <span class="section-tag">Tu Experiencia</span>
-      <h2>¡Cuéntanos qué te pareció!</h2>
-      <p class="subtitle">Nos encanta leer tus comentarios para seguir mejorando nuestras recetas.</p>
+  <!-- SECCIÓN PRINCIPAL -->
+  <main style="padding: 3rem 1rem; max-width: 800px; margin: 0 auto;">
 
-      <form id="reviewForm">
-        <div class="form-group">
-          <label for="revNombre">Tu Nombre o Apodo *</label>
-          <input type="text" id="revNombre" placeholder="Ej: Camila Valenzuela" required>
+        <!-- FORMULARIO DE RESEÑA -->
+    <div style="background: #fff; padding: 2.5rem 2rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.04);">
+      <h3 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; text-align: center; margin-bottom: 0.5rem; color: #2D2825;">¿Probaste nuestros productos? 🧁</h3>
+      <p style="text-align: center; color: #777; font-size: 0.88rem; margin-bottom: 1.8rem;">Déjanos tu comentario para seguir mejorando día a día.</p>
+      
+      <form id="reviewForm" style="display: flex; flex-direction: column; gap: 1.2rem;">
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; color: #444;">Tu Nombre y Apellido:</label>
+          <input type="text" id="revName" placeholder="Ej: Alejandra Candia" required style="width: 100%; padding: 0.85rem; border: 1px solid #e2e2e2; border-radius: 8px; font-family: inherit; font-size: 0.9rem; background-color: #fafafa;">
+        </div>
+        
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; color: #444;">Calificación:</label>
+          <select id="revStars" style="width: 100%; padding: 0.85rem; border: 1px solid #e2e2e2; border-radius: 8px; font-family: inherit; font-size: 0.9rem; background-color: #fafafa;">
+            <option value="5">⭐⭐⭐⭐⭐ Excelente (5/5)</option>
+            <option value="4">⭐⭐⭐⭐ Muy Bueno (4/5)</option>
+            <option value="3">⭐⭐⭐ Bueno (3/5)</option>
+            <option value="2">⭐⭐ Regular (2/5)</option>
+            <option value="1">⭐ Malo (1/5)</option>
+          </select>
         </div>
 
-        <div class="form-group">
-          <label for="revPedido">¿Qué pediste? *</label>
-          <input type="text" id="revPedido" placeholder="Ej: Waffles Tentación + Torta Floral" required>
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; color: #444;">Tu Experiencia / Comentario:</label>
+          <textarea id="revComment" rows="4" placeholder="Cuéntanos qué te pareció la atención, la presentación o el sabor..." required style="width: 100%; padding: 0.85rem; border: 1px solid #e2e2e2; border-radius: 8px; font-family: inherit; font-size: 0.9rem; background-color: #fafafa; resize: vertical;"></textarea>
         </div>
 
-        <div class="form-group">
-          <label>Calificación *</label>
-          <div class="star-rating" id="starPicker">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-          </div>
-          <input type="hidden" id="revRating" value="5" required>
-        </div>
-
-        <div class="form-group">
-          <label for="revComentario">Tu opinión *</label>
-          <textarea id="revComentario" rows="4" placeholder="¿Qué tal el sabor, textura y presentación?" required></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-submit" id="submitBtn">Publicar mi opinión</button>
+        <button type="submit" style="background: #2D2825; color: #fff; border: none; padding: 1rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; cursor: pointer;">
+          Publicar Opinión
+        </button>
       </form>
-    </section>
+    </div>
+    
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <span style="text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; color: #C59B27; font-weight: 600;">Experiencias Dulces</span>
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #2D2825; margin-top: 0.5rem;">Opiniones de Nuestros Clientes</h2>
+      <p style="color: #666; font-size: 0.95rem; margin-top: 0.5rem;">Conoce lo que dicen quienes ya han disfrutado de nuestras creaciones.</p>
+    </div>
 
-    <!-- Columna Derecha: Muro de Reseñas -->
-    <section class="reviews-feed">
-      <div class="reviews-feed-header">
-        <h2>Experiencias de nuestros clientes</h2>
-        <span id="reviewsCountBadge" class="pill-badge">Cargando opiniones...</span>
-      </div>
-
-      <div class="reviews-list" id="reviewsContainer">
-        <!-- Las reseñas cargadas desde la nube se insertan aquí -->
-      </div>
-    </section>
+    <!-- CONTENEDOR DE RESEÑAS -->
+    <div id="reviewsContainer" style="display: grid; gap: 1.2rem; margin-bottom: 3.5rem;">
+      <p style="text-align: center; color: #888; font-style: italic;">Cargando opiniones de nuestros clientes...</p>
+    </div>
 
   </main>
 
   <script>
-    // --- 1. CONFIGURACIÓN SUPABASE ---
-    // Pega aquí las credenciales de tu proyecto de Supabase:
-    const SUPABASE_URL = "https://cbuwsnihxglprygvkuoh.supabase.co/rest/v1/";
-    const SUPABASE_KEY = "sb_publishable_2UXXu9R3hHY9mab9siUV-g_NguxbVXw";
+    // Inicialización aislada para evitar duplicaciones
+    const SUPABASE_URL = 'https://cbuwsnihxglprygvkuoh.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_2UXXu9R3hHY9mab9siUV-g_NguxbVXw'; 
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const supabaseReviewsClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-    // --- 2. MANEJO DE ESTRELLAS INTERACTIVAS ---
-    let currentRating = 5;
-    const stars = document.querySelectorAll("#starPicker .star");
-    const ratingInput = document.getElementById("revRating");
-
-    function updateStarsDisplay(val) {
-      stars.forEach(s => {
-        if (parseInt(s.dataset.value) <= val) {
-          s.classList.add("active");
-        } else {
-          s.classList.remove("active");
-        }
-      });
-    }
-    updateStarsDisplay(currentRating);
-
-    stars.forEach(s => {
-      s.addEventListener("click", () => {
-        currentRating = parseInt(s.dataset.value);
-        ratingInput.value = currentRating;
-        updateStarsDisplay(currentRating);
-      });
-    });
-
-    // --- 3. CARGAR RESEÑAS DE LA BASE DE DATOS ---
     async function loadReviews() {
       const container = document.getElementById("reviewsContainer");
-      const badge = document.getElementById("reviewsCountBadge");
+      if (!container || !supabaseReviewsClient) return;
 
-      const { data, error } = await supabase
-        .from('reviews')
-        .select('*')
-        .order('created_at', { ascending: false });
+      try {
+        const { data: opiniones, error } = await supabaseReviewsClient
+          .from('opiniones')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error("Error cargando reseñas:", error);
-        container.innerHTML = `<p style="color: red;">No pudimos cargar las opiniones en este momento.</p>`;
-        return;
-      }
+        if (error) throw error;
 
-      badge.textContent = `${data.length} opiniones registradas`;
+        if (!opiniones || opiniones.length === 0) {
+          container.innerHTML = `<p style="text-align:center; color: #777; padding: 2rem 0;">Aún no hay opiniones publicadas. ¡Sé el primero en compartir tu experiencia!</p>`;
+          return;
+        }
 
-      if (data.length === 0) {
-        container.innerHTML = `<p style="color: var(--text-muted); padding: 2rem 0;">Aún no hay opiniones. ¡Sé la primera persona en dejar una!</p>`;
-        return;
-      }
-
-      container.innerHTML = data.map(item => {
-        const starStr = "★".repeat(item.rating) + "☆".repeat(5 - item.rating);
-        const dateObj = new Date(item.created_at);
-        const fechaFormatted = dateObj.toLocaleDateString("es-CL", { day: 'numeric', month: 'short', year: 'numeric' });
-
-        return `
-          <article class="review-item-card">
-            <div class="review-header-row">
-              <span class="review-stars">${starStr}</span>
-              <span class="review-date">${fechaFormatted}</span>
+        container.innerHTML = opiniones.map(op => `
+          <div style="background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+              <strong style="color: #2D2825; font-size: 1.05rem;">${escapeHtml(op.nombre)}</strong>
+              <span style="font-size: 0.9rem;">${"⭐".repeat(op.estrellas || 5)}</span>
             </div>
-            <p class="review-comment">"${item.comentario}"</p>
-            <div class="review-author-meta">
-              <strong>${item.nombre}</strong>
-              <span class="ordered-tag">Pidió: ${item.pedido}</span>
-            </div>
-          </article>
-        `;
-      }).join("");
+            <p style="margin: 0; color: #555; font-size: 0.95rem; line-height: 1.5;">"${escapeHtml(op.comentario)}"</p>
+            <span style="display: block; margin-top: 0.8rem; font-size: 0.75rem; color: #aaa;">
+              ${op.created_at ? new Date(op.created_at).toLocaleDateString('es-CL') : 'Reciente'}
+            </span>
+          </div>
+        `).join("");
+
+      } catch (err) {
+        console.error("Error al cargar opiniones:", err);
+        container.innerHTML = `<p style="text-align:center; color: #c0392b;">Ocurrió un error al cargar las opiniones.</p>`;
+      }
     }
 
-    // --- 4. GUARDAR NUEVA RESEÑA ---
-    document.getElementById("reviewForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const submitBtn = document.getElementById("submitBtn");
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Publicando...";
+    function escapeHtml(str) {
+      return (str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
 
-      const nuevoNombre = document.getElementById("revNombre").value.trim();
-      const nuevoPedido = document.getElementById("revPedido").value.trim();
-      const nuevoComentario = document.getElementById("revComentario").value.trim();
+    document.addEventListener("DOMContentLoaded", () => {
+      loadReviews();
 
-      const { data, error } = await supabase
-        .from('reviews')
-        .insert([
-          {
-            nombre: nuevoNombre,
-            pedido: nuevoPedido,
-            rating: currentRating,
-            comentario: nuevoComentario
+      const form = document.getElementById("reviewForm");
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const name = document.getElementById("revName")?.value.trim();
+          const stars = parseInt(document.getElementById("revStars")?.value || "5");
+          const comment = document.getElementById("revComment")?.value.trim();
+
+          if (!name || !comment) return;
+
+          const btn = form.querySelector("button[type='submit']");
+          if (btn) { btn.disabled = true; btn.textContent = "Publicando..."; }
+
+          if (supabaseReviewsClient) {
+            const { error } = await supabaseReviewsClient
+              .from('opiniones')
+              .insert([{ nombre: name, estrellas: stars, comentario: comment, aprobado: true }]);
+
+            if (error) {
+              alert("Ocurrió un error al guardar tu opinión.");
+              console.error(error);
+            } else {
+              alert("¡Muchas gracias por tu opinión! 🧁");
+              form.reset();
+              loadReviews();
+            }
           }
-        ]);
 
-      if (error) {
-        alert("Ocurrió un error al enviar tu reseña: " + error.message);
-      } else {
-        document.getElementById("reviewForm").reset();
-        currentRating = 5;
-        updateStarsDisplay(5);
-        // Recargar el muro de reseñas
-        await loadReviews();
+          if (btn) { btn.disabled = false; btn.textContent = "Publicar Opinión"; }
+        });
       }
-
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Publicar mi opinión";
     });
-
-    // Cargar opiniones al entrar a la página
-    document.addEventListener("DOMContentLoaded", loadReviews);
   </script>
 </body>
 </html>
