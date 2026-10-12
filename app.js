@@ -1,3 +1,4 @@
+
 // Estado local del carrito
 let cart = [];
 
@@ -127,8 +128,7 @@ function closeCartDrawer() {
 }
 
 // Preparar y enviar mensaje a WhatsApp
-// Actualizar función de checkout
-// Actualizar función de checkout
+
 function checkoutWhatsApp() {
   try {
     // 1. Validar que la canasta tenga productos
@@ -326,3 +326,74 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("checkoutWhatsappBtn").addEventListener("click", checkoutWhatsApp);
 });
 
+
+// ==========================================
+// CARGAR OPINIONES EN LA PÁGINA PRINCIPAL
+// ==========================================
+async function loadHomeReviews() {
+  const container = document.getElementById("reviewsContainer");
+  if (!container) return;
+
+  const SUPABASE_URL = 'https://cbuwsnihxglprygvkuoh.supabase.co';
+  // Reemplaza con tu Publishable Key o Legacy Anon Key activa
+  const SUPABASE_KEY = 'sb_publishable_2UXXu9R3hHY9mab9siUV-g_NguxbVXw'; 
+
+  if (typeof window.supabase === "undefined") {
+    container.innerHTML = `<p style="text-align:center; color: #777;">Librería de Supabase no disponible.</p>`;
+    return;
+  }
+
+  try {
+    const supabaseHome = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const { data: opiniones, error } = await supabaseHome
+      .from('opiniones')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    if (!opiniones || opiniones.length === 0) {
+      container.innerHTML = `<p style="text-align:center; color: #777;">Aún no hay opiniones publicadas.</p>`;
+      return;
+    }
+
+    // Tomar solo las primeras 3 para no recargar la página principal
+// Tomar solo las primeras 3 para no recargar la página principal
+    const ultimas = opiniones.slice(0, 3);
+
+    container.innerHTML = ultimas.map(op => `
+      <div style="background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 12px rgba(0,0,0,0.03); aspect-ratio: 1 / 1; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; overflow: hidden;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.6rem; gap: 0.5rem;">
+            <strong style="color: #2D2825; font-size: 0.95rem; line-height: 1.2; word-break: break-word;">${escapeHomeHtml(op.nombre)}</strong>
+            <span style="font-size: 0.85rem; flex-shrink: 0;">${"⭐".repeat(op.estrellas || 5)}</span>
+          </div>
+          <!-- Texto de opinión con scroll interno discreto en caso de ser muy largo -->
+          <p style="margin: 0; color: #555; font-size: 0.88rem; line-height: 1.45; max-height: 110px; overflow-y: auto; scrollbar-width: none; font-style: italic;">
+            "${escapeHomeHtml(op.comentario)}"
+          </p>
+        </div>
+        <!-- Fecha al pie de la tarjeta -->
+        <span style="display: block; font-size: 0.75rem; color: #aaa; margin-top: 0.5rem;">
+          ${op.created_at ? new Date(op.created_at).toLocaleDateString('es-CL') : 'Reciente'}
+        </span>
+      </div>
+    `).join("");
+
+  } catch (err) {
+    console.error("Error al cargar opiniones en la Home:", err);
+    container.innerHTML = `<p style="text-align:center; color: #777;">No se pudieron cargar las opiniones.</p>`;
+  }
+}
+
+function escapeHomeHtml(str) {
+  return (str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// Ejecutar automáticamente al cargar la página principal
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", loadHomeReviews);
+} else {
+  loadHomeReviews();
+}
