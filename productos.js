@@ -7,10 +7,10 @@ const PRODUCTS = [
     id: 1,
     name: "Waffles Tentación Oreo & Frutilla",
     category: "waffles",
-    price: 1500,
+    price: 1800,
     tag: "Estrella de la Casa",
     desc: "Waffles crujientes y esponjosos servidos con crema batida, frutillas frescas, galleta Oreo troceada y salsa de chocolate.",
-    image: "waffles.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+    image: "img/waffles.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
   {
     id: 2,
@@ -19,6 +19,33 @@ const PRODUCTS = [
     price: 1500,
     tag: "Proximamente",
     desc: "Waffles crujientes y esponjosos servidos con crema batida, plátano en rodajas, Nutella.",
-    image: "Proximamente.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+    image: "img/Proximamente.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
+    {
+    id: 3,
+    name: "Coca-Cola",
+    category: "bebidas",
+    price: 1000,
+    tag: "Ultimas Unidades",
+    desc: "Coca-Cola de 350ml, refrescante y deliciosa.",
+    image: "img/coca.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+  },
+  {
+    id: 4,
+    name: "Sprite",
+    category: "bebidas",
+    price: 1000,
+    tag: "Ultimas Unidades",
+    desc: "Sprite de 350ml, refrescante y deliciosa.",
+    image: "img/sprite.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+  },
+  {
+    id: 5,
+    name: "Fanta",
+    category: "bebidas",
+    price: 1000,
+    tag: "Ultimas Unidades",
+    desc: "Fanta de 350ml, refrescante y deliciosa.",
+    image: "img/fanta.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+  }
 ];
