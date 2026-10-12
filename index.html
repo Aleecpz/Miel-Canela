@@ -3,7 +3,7 @@
 <head>
 
   <!-- Icono de pestaña (Favicon) -->
-  <link rel="icon" type="image/png" href="preview.png">
+  <link rel="icon" type="image/png" href="img/preview.png">
   <!-- Título y descripción para buscadores -->
   <title>Miel & Canela | Cocina & Taller Dulce</title>
   <meta name="description" content="Pastelería fina y cocina artesanal en Concepción. Waffles, tortas personalizadas y bocados dulces hechos con amor.">
@@ -14,6 +14,8 @@
   <meta property="og:image" content="preview.jpg">
   <meta property="og:type" content="website">
 
+  <!-- En el <head> de index.html -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   
   <meta charset="UTF-8">
@@ -41,7 +43,7 @@
 <nav class="nav-links">
   <a href="#catalogo">Nuestra Carta</a>
   <a href="#eventos">Eventos Especiales</a>
-  <a href="opiniones.html">Opiniones de Clientes</a> <!-- 👈 Nuevo enlace -->
+  <a href="opiniones.html">Opiniones de Clientes</a> <!-- 👈 Enlace directo a la nueva pestaña -->
   <!--<a href="#nosotros">Nosotros</a>-->
 </nav>
 
@@ -56,7 +58,7 @@
   <section class="hero">
     <div class="hero-content">
       <span class="pill-badge">✨ Horneado con amor artesanal</span>
-      <h1>Repostería fina & cocina casera para celebrar la vida</h1>
+      <h1>Cocina casera para celebrar la vida</h1>
       <p>Sabores frescos, ingredientes reales y presentaciones llenas de dedicación. Desde tortas personalizadas hasta brunchs y bocados únicos.</p>
       <div class="hero-cta-group">
         <a href="#catalogo" class="btn btn-primary">Ver Menú & Pedir</a>
@@ -81,7 +83,7 @@
       <div class="filter-pills" id="categoryFilters">
         <button class="filter-btn active" data-category="todos">Todos</button>
         <button class="filter-btn" data-category="waffles">Waffles & Cookies</button>
-        <button class="filter-btn" data-category="pasteles">Tortas & Pasteles</button>
+        <button class="filter-btn" data-category="bebidas">Bebidas</button>
 <!--    <button class="filter-btn" data-category="cookies">Desayunos & Bocados</button>
         <button class="filter-btn" data-category="salados">Salados & Brunch</button> -->
       </div>
@@ -94,6 +96,23 @@
       </div>
     </div>
   </main>
+
+  <!-- Sección Opiniones / Testimonios -->
+
+  <section id="reviews" class="reviews-section" style="padding: 3rem 1rem; max-width: 900px; margin: 0 auto; text-align: center;">
+    <h2 class="section-title" style="font-family: 'Playfair Display', serif; margin-bottom: 2rem;">
+      Opiniones de Nuestros Clientes
+    </h2>
+  
+  <!-- Contenedor con Grid para hacer las tarjetas cuadradas -->
+    <div id="reviewsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; text-align: left;">
+      <p style="text-align:center; color: #777; grid-column: 1 / -1;">Cargando opiniones de nuestros clientes...</p>
+    </div>
+
+    <a href="opiniones.html" style="display: inline-block; padding: 0.7rem 1.5rem; background: #2D2825; color: #fff; border-radius: 50px; text-decoration: none; font-size: 0.88rem; font-weight: 600;">
+      Ver todas o dejar una opinión →
+    </a>
+  </section>
 
 
 
@@ -115,64 +134,17 @@
 
 
 
-
-
-<!-- Sección Opiniones / Testimonios -->
-  <section class="testimonials-section" id="opiniones">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Testimonios</span>
-        <h2>Lo que dicen nuestros clientes</h2>
-        <p>El cariño y dedicación reflejado en cada entrega.</p>
-      </div>
-
-      <div class="testimonials-grid">
-        <article class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"Pedi dos waffles con mi novio y estuvieron deliciosos!"</p>
-          <div class="testimonial-author">
-            <strong>Camila Valenzuela</strong>
-            <span>Cena</span>
-          </div>
-        </article>
-
-        <article class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"Los waffles salvan cualquier once. Todo llega calientito, crujiente y con una presentación hermosa."</p>
-          <div class="testimonial-author">
-            <strong>Matías Morales</strong>
-            <span>Primera vez comprando</span>
-          </div>
-        </article>
-
-        <article class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"La atención por WhatsApp es súper rápida y amable. Waffles con Helado y chocolate tal como lo pedí. 100% recomendados."</p>
-          <div class="testimonial-author">
-            <strong>Francisca Silva</strong>
-            <span>Waffles</span>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-
-
-
-
-  
   <!-- Pie de página -->
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-col">
         <h3>Miel & Canela</h3>
-        <p>Pastelería y comida artesanal creada con pasión y el toque casero de siempre.</p>
+        <p>Postres artesanales creada con pasión y el toque casero de siempre.</p>
       </div>
       <div class="footer-col">
         <h4>Horarios de Entrega</h4>
-        <p>Lunes a Domingo: 18:00 - 23:59 hrs</p>
-        <p>Encargos a todas partes.</p>
+        <p>Lunes a Domingo: --- hrs</p>
+        <p>Encargos Establecimiento vicuña mackenna.</p>
       </div>
       <div class="footer-col">
         <h4>Contacto</h4>
@@ -245,8 +217,9 @@
         <!-- Selector de modalidad (Empieza en blanco y deshabilitado) -->
         <select id="custDeliveryType" class="cart-input-select">
           <option value="" selected disabled>- Seleccione una opción -</option>
-          <option value="Despacho a Domicilio">🛵 Despacho a Domicilio</option>
           <option value="Retiro en Departamento Vicuña Mackenna">📍 Retiro en Departamento Vicuña Mackenna</option>
+          <option value="Despacho a Domicilio" selected disabled>🛵 Despacho a Domicilio - Proximamente -</option>
+          <option value="" selected disabled hidden>- Seleccione una opción -</option>
         </select>
 
         <p id="deliveryHint" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.6rem;">
@@ -286,5 +259,6 @@
   <script src="productos.js"></script>
   <!-- 2. La lógica de la página -->
   <script src="app.js"></script>
+
 </body>
 </html>
