@@ -128,22 +128,28 @@
               1. Elige Base / Salsa Principal:
             </label>
             <select id="waffleSauce" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; font-family: inherit; background: #fafafa; box-sizing: border-box;">
-              <option value="Salsa de Chocolate">Frutilla</option>
-              <option value="Manjar Casero">Platano</option>
-              <option value="Salsa de Frutilla">Oreo</option>
-              <option value="Salsa de Frutilla">Salsa de Chocolate</option>
+                <option value="" selected disabled>Seleccione una salsa/base</option>
+                <option value="Salsa de Frutilla">Salsa de Chocolate</option>
+                <option value="Crema Chantilly">Crema Chantilly</option>
             </select>
           </div>
 
           <!-- 2. EXTRAS / TOPPINGS -->
           <div style="margin-bottom: 1.5rem;">
             <label style="display: block; font-weight: 700; margin-bottom: 0.5rem; color: #2D2825; font-size: 0.88rem;">
-              2. Agregados / Extras (+$500 c/u):
+              2. Agregados 2 Gratis / Extras (500 c/u):
             </label>
             <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem;">
               <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
                 <span style="display: flex; align-items: center; gap: 0.5rem;">
                   <input type="checkbox" class="waffle-extra" value="Frutillas Frescas" data-price="500" style="transform: scale(1.2);"> Frutillas Frescas
+              </label>
+
+              </label>
+                <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox" class="waffle-extra" value="Plátano en Rodajas" data-price="500" style="transform: scale(1.2);"> Plátano en Rodajas
+                </span>
               </label>
 
               <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
@@ -152,11 +158,25 @@
                 </span>
               </label>
 
+                </label>
+                <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox" class="waffle-extra" value="Salsa de chocolate" data-price="500" style="transform: scale(1.2);"> Salsa de chocolate
+                </span>
+              </label>
+
               <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
                 <span style="display: flex; align-items: center; gap: 0.5rem;">
                   <input type="checkbox" class="waffle-extra" value="Crema Chantilly" data-price="500" style="transform: scale(1.2);"> Crema Chantilly
                 </span>
+            </label>
+
+                <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox" class="waffle-extra" value="Syrup" data-price="500" style="transform: scale(1.2);"> Syrup
+                </span>
               </label>
+
             </div>
           </div>
 
@@ -180,42 +200,50 @@
   </main>
 
   <script>
+
     document.getElementById("waffleCustomForm").addEventListener("submit", (e) => {
-      e.preventDefault();
+  e.preventDefault();
 
-      const sauce = document.getElementById("waffleSauce").value;
-      const extras = Array.from(document.querySelectorAll(".waffle-extra:checked"));
-      
-      let extraNames = [];
-      let extraPrice = 0;
+  const sauce = document.getElementById("waffleSauce").value;
+  const extras = Array.from(document.querySelectorAll(".waffle-extra:checked"));
+  
+  let extraNames = [];
+  let extraPrice = 0;
 
-      extras.forEach(cb => {
-        extraNames.push(cb.value);
-        extraPrice += parseInt(cb.dataset.price || "0");
-      });
+  // Lógica: Máximo 2 incluidos (gratis), los demás cobran $500
+  extras.forEach((cb, index) => {
+    const isFree = index < 2; // Los primeros 2 son gratis
+    const priceUnit = parseInt(cb.dataset.price || "500");
 
-      const notes = document.getElementById("waffleNotes").value.trim();
+    if (isFree) {
+      extraNames.push(`${cb.value} (Incluido)`);
+    } else {
+      extraNames.push(`${cb.value} (+$${priceUnit})`);
+      extraPrice += priceUnit; // Se suma al total a partir del 3er agregado
+    }
+  });
 
-      // Formatear resumen
-      let details = [`Salsa: ${sauce}`];
-      if (extraNames.length > 0) details.push(`Extras: ${extraNames.join(", ")}`);
-      if (notes) details.push(`Nota: ${notes}`);
+  const notes = document.getElementById("waffleNotes").value.trim();
 
-      const item = {
-        id: "waffle_" + Date.now(),
-        name: `Waffle Artesanal (${details.join(" | ")})`,
-        price: 1500 + extraPrice,
-        qty: 1
-      };
+  // Resumen del producto
+  let details = [`Salsa: ${sauce}`];
+  if (extraNames.length > 0) details.push(`Extras: ${extraNames.join(", ")}`);
+  if (notes) details.push(`Nota: ${notes}`);
 
-      // Guardar en LocalStorage para que index.html lo reciba
-      let cart = JSON.parse(localStorage.getItem("miel_cart") || "[]");
-      cart.push(item);
-      localStorage.setItem("miel_cart", JSON.stringify(cart));
+  const item = {
+    id: "waffle_" + Date.now(),
+    name: `Waffle Artesanal (${details.join(" | ")})`,
+    price: 1500 + extraPrice, // Base + extras adicionales
+    qty: 1
+  };
 
-      // Redirigir de vuelta al catálogo principal abriendo la canasta
-      window.location.href = "index.html?cart=open";
-    });
+  // Guardar en LocalStorage y volver a la carta
+  let cart = JSON.parse(localStorage.getItem("miel_cart") || "[]");
+  cart.push(item);
+  localStorage.setItem("miel_cart", JSON.stringify(cart));
+
+  window.location.href = "index.html?cart=open";
+});
   </script>
 </body>
 </html>
