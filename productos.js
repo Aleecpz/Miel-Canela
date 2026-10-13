@@ -13,12 +13,21 @@ const PRODUCTS = [
     image: "waffles.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
   {
+    id: 6,
+    name: "Waffles A Tu Eleccion",
+    category: "waffles2",
+    price: 1500,
+    tag: "Nuevo",
+    desc: "Pide Tus waffles a tu gusto, con nustra amplia variedad de combinaciones.",
+    image: "elegir.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+  },
+  {
     id: 2,
-    name: "Waffles Tentación platano & Nutella",
+    name: "Waffles Tentación platano & Chocolate",
     category: "waffles",
     price: 1500,
     tag: "Proximamente",
-    desc: "Waffles crujientes y esponjosos servidos con crema batida, plátano en rodajas, Nutella.",
+    desc: "Waffles crujientes y esponjosos servidos con crema batida, plátano en rodajas, Chocolate.",
     image: "Proximamente.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
     {
