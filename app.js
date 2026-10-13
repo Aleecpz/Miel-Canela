@@ -336,6 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const geoBtn = document.getElementById("geoBtn");
   const deliveryType = document.getElementById("custDeliveryType")?.value || "";
 
+
   // Obtener enlace de Google Maps con las coordenadas del cliente
   if (geoBtn) {
     geoBtn.addEventListener("click", () => {
