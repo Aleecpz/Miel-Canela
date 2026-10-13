@@ -351,18 +351,22 @@ body.cart-is-open .cart-trigger-btn {
   color: var(--text-dark);
 }
 .btn-add {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-subtle);
-  padding: 0.5rem 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
+  background: #e5e2c2;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
   font-weight: 600;
   font-size: 0.85rem;
-  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  transition: background 0.2s ease;
 }
+
 .btn-add:hover {
-  background: var(--text-dark);
-  color: #fff;
+  background: #C59B27;
 }
 
 /* Eventos */
