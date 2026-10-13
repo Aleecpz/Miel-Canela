@@ -336,11 +336,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const geoBtn = document.getElementById("geoBtn");
   const deliveryType = document.getElementById("custDeliveryType")?.value || "";
 
-  if (!deliveryType) {
-    alert("Por favor selecciona una modalidad de entrega (Despacho o Retiro).");
-    return;
-  }
-
   // Obtener enlace de Google Maps con las coordenadas del cliente
   if (geoBtn) {
     geoBtn.addEventListener("click", () => {
