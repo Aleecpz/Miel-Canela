@@ -30,16 +30,18 @@
   <!-- Archivo CSS externo -->
   <link rel="stylesheet" href="style.css">
 
-    <!-- Meta Tags para Vista Previa en Redes Sociales (Open Graph) -->
+  <!-- Meta Tags para Vista Previa en Redes Sociales (Open Graph) -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Miel & Canela | Cocina & Taller Dulce">
   <meta property="og:description" content="Descubre nuestras creaciones artesanales. Encargos con retiro o despacho a domicilio.">
 
   <!-- URL ABSOLUTA DE LA IMAGEN DE VISTA PREVIA -->
-  <meta property="og:image" content="https://aleecpz.github.io/Miel-Canela/img/preview.jpg">
+  <meta property="og:image" content="https://aleecpz.github.io/Miel-Canela/preview.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  
+
+
+
 </head>
 <body>
   
@@ -52,6 +54,8 @@
       </a>
 
 <nav class="nav-links">
+    <a href="personalizar.html" class="btn-add" style="text-decoration: none; display: inline-block; text-align: center;">
+  Personalizar → </a>
   <a href="#catalogo">Nuestra Carta</a>
   <a href="#eventos">Eventos Especiales</a>
   <a href="opiniones.html">Opiniones de Clientes</a> <!-- 👈 Enlace directo a la nueva pestaña -->
@@ -250,9 +254,22 @@
         <!-- CAJA 2: Retiro (Oculta con display: none) -->
         <div id="pickupGroup" style="display: none;">
           <input type="text" id="custFloor" placeholder="Numero de piso o referencia (Ej: 2do piso, depto 3)">
-          <input type="tel" id="custPhone" placeholder="Teléfono de contacto (Ej: +56 9 1234 5678)">
+          <select id="custPaymentSelect" class="cart-input-select">
+          <option value="" selected disabled>- Seleccione método de pago -</option>
+          <option value="Efectivo">💵 Efectivo</option>
+          <option value="Transferencia">💳 Transferencia</option>
+        </select>
+        </div>
+        <!-- Selección de Método de Pago -->
+
+
+        <!-- Caja para el vuelto/monto en efectivo (Oculta por defecto) -->
+        <div id="cashGroup" style="display: none; margin-top: 0.5rem;">
+          <input type="text" id="custCashAmount" placeholder="¿Con cuánto pagará? (Ej: $10.000)" class="cart-input">
+        </div>
           <p class="pickup-hint">Te avisaremos por WhatsApp o llamada cuando tu encargo esté listo.</p>
         </div>
+        
 
         <!-- Notas / Comentarios -->
          <div id="pickupGroup" style="display: none;">
@@ -263,13 +280,13 @@
           Enviar Pedido por WhatsApp
         </button>
       </div>
-
-
   <!-- Importamos los archivos JS al final -->
   <!-- 1. Los datos de los productos -->
   <script src="productos.js"></script>
   <!-- 2. La lógica de la página -->
   <script src="app.js"></script>
+
+  
 
 </body>
 </html>
