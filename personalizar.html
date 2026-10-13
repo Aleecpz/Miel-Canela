@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Personaliza tu Waffle | Miel & Canela</title>
+  
+  <!-- Estilos principales de la web -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ESTILOS RESPONSIVOS PARA MÓVILES */
+    .custom-container {
+      padding: 1.5rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .custom-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .custom-card {
+      background: #fff;
+      padding: 1.8rem 1.2rem;
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+      box-sizing: border-box;
+    }
+
+    /* Adaptaciones específicas para pantallas pequeñas (Celulares) */
+    @media (max-width: 600px) {
+      .custom-container {
+        padding: 1rem 0.8rem;
+      }
+
+      .custom-grid {
+        grid-template-columns: 1fr; /* Una sola columna fluida */
+        gap: 1.2rem;
+      }
+
+      .custom-card {
+        padding: 1.2rem 1rem; /* Padding más ajustado para aprovechar espacio */
+        border-radius: 12px;
+      }
+
+      .custom-title {
+        font-size: 1.6rem !important;
+      }
+
+      .custom-price {
+        font-size: 1.25rem !important;
+      }
+
+      /* Botón de acción grande y cómodo para tocar con el pulgar */
+      .btn-submit-mobile {
+        padding: 1.1rem !important;
+        font-size: 1.05rem !important;
+      }
+
+      /* Ajuste de etiquetas de checkboxes */
+      .extra-item-label {
+        padding: 0.75rem 0.6rem !important;
+        font-size: 0.88rem !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN COMPACTA -->
+  <header class="navbar">
+    <div class="nav-container" style="display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0.8rem 1rem;">
+      <a href="index.html" class="brand" style="text-decoration: none; color: inherit;">
+        <span class="brand-sub" style="display: block; font-size: 0.7rem; letter-spacing: 2px; color: #888;">PASTELERÍA & DULCES</span>
+        <h1 class="brand-title" style="font-family: 'Playfair Display', serif; font-size: 1.3rem; margin: 0;">Miel & Canela</h1>
+      </a>
+      
+      <a href="index.html" class="btn" style="text-decoration: none; padding: 0.5rem 1rem; background: #2D2825; color: #fff; border-radius: 50px; font-weight: 600; font-size: 0.8rem; white-space: nowrap;">
+        ← Volver
+      </a>
+    </div>
+  </header>
+
+  <!-- SECCIÓN PRINCIPAL DE PERSONALIZACIÓN -->
+  <main class="custom-container">
+    
+    <!-- Migas de pan -->
+    <nav style="font-size: 0.85rem; color: #777; margin-bottom: 1.2rem; overflow-x: auto; white-space: nowrap;">
+      <a href="index.html" style="color: #2D2825; text-decoration: none; font-weight: 600;">Inicio</a> 
+      &gt; <span>Waffles</span> &gt; <strong style="color: #C59B27;">Personalización</strong>
+    </nav>
+
+    <div class="custom-grid">
+      
+      <!-- FOTO E INFORMACIÓN DEL PRODUCTO -->
+      <div>
+        <div style="border-radius: 16px; overflow: hidden; background: #fafafa; border: 1px solid #eee; aspect-ratio: 1/1; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 100%; max-width: 400px; margin: 0 auto;">
+          <img id="waffleImg" src="waffles.jpg" alt="Waffle Artesanal" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/400x400?text=Waffle+Artesanal'">
+        </div>
+        <p style="font-size: 0.78rem; color: #aaa; text-align: center; margin-top: 0.6rem;">
+          Las imágenes son de carácter referencial.
+        </p>
+      </div>
+
+      <!-- FORMULARIO DE SELECCIÓN Y EXTRAS -->
+      <div class="custom-card">
+        <h2 class="custom-title" style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 0 0 0.3rem 0; color: #2D2825;">
+          Waffle Artesanal
+        </h2>
+        <p class="custom-price" style="font-size: 1.35rem; font-weight: 700; color: #C59B27; margin: 0 0 0.8rem 0;">
+          $1.500
+        </p>
+        <p style="color: #666; font-size: 0.88rem; line-height: 1.45; margin-bottom: 1.5rem;">
+          Crujiente por fuera y suave por dentro. Elige tu salsa base y tus toppings favoritos a continuación (Incluye la Crema Chantilly).
+        </p>
+
+        <form id="waffleCustomForm">
+          
+          <!-- 1. SALSA PRINCIPAL -->
+          <div style="margin-bottom: 1.3rem;">
+            <label style="display: block; font-weight: 700; margin-bottom: 0.4rem; color: #2D2825; font-size: 0.88rem;">
+              1. Elige Base / Salsa Principal:
+            </label>
+            <select id="waffleSauce" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; font-family: inherit; background: #fafafa; box-sizing: border-box;">
+              <option value="Salsa de Chocolate">Frutilla</option>
+              <option value="Manjar Casero">Platano</option>
+              <option value="Salsa de Frutilla">Oreo</option>
+              <option value="Salsa de Frutilla">Salsa de Chocolate</option>
+            </select>
+          </div>
+
+          <!-- 2. EXTRAS / TOPPINGS -->
+          <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; font-weight: 700; margin-bottom: 0.5rem; color: #2D2825; font-size: 0.88rem;">
+              2. Agregados / Extras (+$500 c/u):
+            </label>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem;">
+              <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox" class="waffle-extra" value="Frutillas Frescas" data-price="500" style="transform: scale(1.2);"> Frutillas Frescas
+              </label>
+
+              <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox" class="waffle-extra" value="Trozos de Oreo" data-price="500" style="transform: scale(1.2);"> Trozos de Oreo
+                </span>
+              </label>
+
+              <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox" class="waffle-extra" value="Crema Chantilly" data-price="500" style="transform: scale(1.2);"> Crema Chantilly
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 3. COMENTARIO -->
+          <div style="margin-bottom: 1.8rem;">
+            <label style="display: block; font-weight: 700; margin-bottom: 0.4rem; color: #2D2825; font-size: 0.88rem;">
+              3. Comentario o Solicitud Especial:
+            </label>
+            <textarea id="waffleNotes" rows="3" placeholder="Ej: Entregar bien caliente, poca salsa..." style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 0.88rem; resize: vertical; box-sizing: border-box; background: #fafafa;"></textarea>
+          </div>
+
+          <!-- BOTÓN DE GUARDAR Y PEDIR -->
+          <button type="submit" class="btn-submit-mobile" style="width: 100%; background: #2D2825; color: #fff; border: none; padding: 0.95rem; border-radius: 50px; font-weight: 700; font-size: 0.95rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            Añadir al Pedido
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    document.getElementById("waffleCustomForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const sauce = document.getElementById("waffleSauce").value;
+      const extras = Array.from(document.querySelectorAll(".waffle-extra:checked"));
+      
+      let extraNames = [];
+      let extraPrice = 0;
+
+      extras.forEach(cb => {
+        extraNames.push(cb.value);
+        extraPrice += parseInt(cb.dataset.price || "0");
+      });
+
+      const notes = document.getElementById("waffleNotes").value.trim();
+
+      // Formatear resumen
+      let details = [`Salsa: ${sauce}`];
+      if (extraNames.length > 0) details.push(`Extras: ${extraNames.join(", ")}`);
+      if (notes) details.push(`Nota: ${notes}`);
+
+      const item = {
+        id: "waffle_" + Date.now(),
+        name: `Waffle Artesanal (${details.join(" | ")})`,
+        price: 1500 + extraPrice,
+        qty: 1
+      };
+
+      // Guardar en LocalStorage para que index.html lo reciba
+      let cart = JSON.parse(localStorage.getItem("miel_cart") || "[]");
+      cart.push(item);
+      localStorage.setItem("miel_cart", JSON.stringify(cart));
+
+      // Redirigir de vuelta al catálogo principal abriendo la canasta
+      window.location.href = "index.html?cart=open";
+    });
+  </script>
+</body>
+</html>
