@@ -2,6 +2,24 @@
 // Estado local del carrito
 let cart = [];
 
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Cargar productos desde el localStorage (trae el Waffle desde personalizar.html)
+  loadCartFromStorage();
+
+  // 2. Renderizar el catálogo y actualizar la interfaz del carrito
+  renderProducts();
+  updateCartUI();
+
+  // 3. Si la URL trae "?cart=open", abre la canasta desplegable automáticamente
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("cart") === "open") {
+    openCartDrawer();
+  }
+
+  // ... resto de tus escuchadores de eventos (botones, modal, filtros, etc.) ...
+});
+
+
 // Formateador de moneda (Pesos chilenos)
 const formatMoney = (amount) => {
   return new Intl.NumberFormat('es-CL', {
@@ -34,6 +52,44 @@ function renderProducts(category = "todos") {
       </div>
     </article>
   `).join("");
+}
+
+// Renderizar productos en el catálogo
+function renderProducts(category = "waffles2") {
+  const grid = document.getElementById("productGrid");
+  if (!grid || typeof PRODUCTS === "undefined") return;
+
+  const filtered = category === "waffles2" 
+    ? PRODUCTS 
+    : PRODUCTS.filter(p => p.category === category);
+
+  grid.innerHTML = filtered.map(item => {
+    // Detecta si es un producto personalizable (ej: Waffle)
+    const isWaffle = item.name.toLowerCase().includes("waffle2") || item.category === "waffles2";
+
+    // Si es Waffle, muestra el botón que redirige a personalizar.html
+    // Si es otro producto, muestra el botón normal de + Agregar
+    const buttonHtml = isWaffle 
+      ? `<a href="personalizar.html" class="btn-add" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Personalizar</a>`
+      : `<button class="btn-add" onclick="addToCart(${item.id})">+ Agregar</button>`;
+
+    return `
+      <article class="product-card">
+        <div class="card-img-container">
+          <img class="card-img" src="${item.image}" alt="${item.name}" loading="lazy">
+          ${item.tag ? `<span class="card-badge">${item.tag}</span>` : ''}
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">${item.name}</h3>
+          <p class="card-desc">${item.desc || ''}</p>
+          <div class="card-footer">
+            <span class="card-price">${formatMoney(item.price)}</span>
+            ${buttonHtml}
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
 }
 
 // Agregar producto al carrito
@@ -137,7 +193,7 @@ function checkoutWhatsApp() {
       return;
     }
 
-    // 2. Obtener datos de forma segura (sin fallar si falta un elemento)
+    // 2. Capturar datos del formulario
     const name = document.getElementById("custName")?.value.trim() || "";
     const deliveryType = document.getElementById("custDeliveryType")?.value || "";
     const address = document.getElementById("custAddress")?.value.trim() || "";
@@ -145,13 +201,17 @@ function checkoutWhatsApp() {
     const floor = document.getElementById("custFloor")?.value.trim() || "";
     const phone = document.getElementById("custPhone")?.value.trim() || "";
 
-    // Notas según lo que esté escrito en el formulario
+    // Método de pago y efectivo
+    const paymentMethod = document.getElementById("custPaymentSelect")?.value || "";
+    const cashAmount = document.getElementById("custCashAmount")?.value.trim() || "";
+
+    // Notas
     const notesDelivery = document.getElementById("custNotesDelivery")?.value.trim() || "";
     const notesPickup = document.getElementById("custNotesPickup")?.value.trim() || "";
     const generalNotes = document.getElementById("custNotes")?.value.trim() || "";
     const notes = notesDelivery || notesPickup || generalNotes;
 
-    // 3. Validaciones básicas obligatorias
+    // 3. Validaciones obligatorias
     if (!name) {
       alert("Por favor ingresa tu nombre y apellido.");
       return;
@@ -167,10 +227,7 @@ function checkoutWhatsApp() {
       return;
     }
 
-    // 4. Número de WhatsApp de destino (prefijo 56 para Chile)
-    const phoneTarget = typeof WHATSAPP_PHONE !== "undefined" ? WHATSAPP_PHONE : "56986593972";
-
-    // 5. Construcción del mensaje
+    // 4. DECLARACIÓN INICIAL DE LA VARIABLE TEXT (Aquí se soluciona el error)
     let text = `*¡Hola! Quiero hacer un encargo en Miel & Canela* 🍰\n\n`;
     text += `*Cliente:* ${name}\n`;
     text += `*Modalidad:* ${deliveryType}\n`;
@@ -183,29 +240,35 @@ function checkoutWhatsApp() {
       if (phone) text += `*Teléfono de contacto:* ${phone}\n`;
     }
 
+    // Agregar el método de pago
+    if (paymentMethod) {
+      text += `*Método de pago:* ${paymentMethod}\n`;
+      if (paymentMethod === "Efectivo" && cashAmount) {
+        text += `*Paga con:* ${cashAmount}\n`;
+      }
+    }
+
     if (notes) {
       text += `*Detalles o notas:* ${notes}\n`;
     }
 
+    // Detalle de los productos en la canasta
     text += `\n*Detalle del pedido:*\n`;
     cart.forEach(item => {
-      const priceText = typeof formatMoney === "function" 
-        ? formatMoney(item.price * item.qty) 
-        : `$${item.price * item.qty}`;
-      text += `• ${item.qty}x ${item.name} (${priceText})\n`;
+      text += `• ${item.qty}x ${item.name} (${formatMoney(item.price * item.qty)})\n`;
     });
 
     const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    const totalText = typeof formatMoney === "function" ? formatMoney(total) : `$${total}`;
-    text += `\n*Total a pagar: ${totalText}*`;
+    text += `\n*Total a pagar: ${formatMoney(total)}*`;
 
-    // 6. Redirigir a WhatsApp
+    // 5. Redirigir a WhatsApp
+    const phoneTarget = typeof WHATSAPP_PHONE !== "undefined" ? WHATSAPP_PHONE : "56986593972";
     const url = `https://wa.me/${phoneTarget}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
 
   } catch (err) {
     console.error("Error en checkoutWhatsApp:", err);
-    alert("Ocurrió un error al generar el pedido. Revisa la consola del navegador.");
+    alert("Ocurrió un error al generar el pedido. Revisa la consola.");
   }
 }
 
@@ -326,6 +389,24 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("checkoutWhatsappBtn").addEventListener("click", checkoutWhatsApp);
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const paymentSelect = document.getElementById("custPaymentSelect");
+  const cashGroup = document.getElementById("cashGroup");
+
+  if (paymentSelect && cashGroup) {
+    paymentSelect.addEventListener("change", (e) => {
+      // Si selecciona "Efectivo", muestra la caja; si no, la oculta
+      if (e.target.value === "Efectivo") {
+        cashGroup.style.display = "block";
+      } else {
+        cashGroup.style.display = "none";
+        // Limpiamos el texto si cambia a transferencia
+        const cashInput = document.getElementById("custCashAmount");
+        if (cashInput) cashInput.value = "";
+      }
+    });
+  }
+});
 
 // ==========================================
 // CARGAR OPINIONES EN LA PÁGINA PRINCIPAL
@@ -396,4 +477,76 @@ if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", loadHomeReviews);
 } else {
   loadHomeReviews();
+}
+
+// Cargar la canasta guardada en localStorage
+function loadCartFromStorage() {
+  const savedCart = localStorage.getItem("miel_cart");
+  if (savedCart) {
+    try {
+      const items = JSON.parse(savedCart);
+      if (Array.isArray(items)) {
+        cart = items; // Carga los productos guardados (incluyendo el Waffle personalizado)
+      }
+    } catch (e) {
+      console.error("Error al leer la canasta guardada:", e);
+    }
+  }
+}
+
+// Guardar el estado actual de la canasta en localStorage
+function syncCartStorage() {
+  localStorage.setItem("miel_cart", JSON.stringify(cart));
+}
+
+// Sobrescribimos updateCartUI para que siempre sincronice el localStorage
+const originalUpdateCartUI = typeof updateCartUI === "function" ? updateCartUI : null;
+
+// Modifica la función updateCartUI existente para agregar la sincronización
+function updateCartUI() {
+  const countBadge = document.getElementById("cartCount");
+  const totalDisplay = document.getElementById("cartTotalDisplay") || document.querySelector(".cart-total-amount");
+  const list = document.getElementById("cartItemsList");
+
+  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+  const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+  if (countBadge) countBadge.textContent = totalQty;
+  if (totalDisplay) totalDisplay.textContent = formatMoney(totalPrice);
+
+  // Sincronizamos con localStorage cada vez que cambia el carrito
+  syncCartStorage();
+
+  if (!list) return;
+
+  if (cart.length === 0) {
+    list.innerHTML = `<p style="text-align: center; color: var(--text-muted, #777); margin-top: 2rem;">Tu canasta está vacía 🧁</p>`;
+    return;
+  }
+
+  list.innerHTML = cart.map(item => `
+    <div class="cart-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid var(--border-subtle, #eee);">
+      <div class="cart-item-info">
+        <h4 style="font-size: 0.9rem; margin-bottom: 0.2rem; line-height: 1.3;">${item.name}</h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted, #777);">${formatMoney(item.price)} c/u</p>
+      </div>
+      <div class="cart-item-qty" style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
+        <button class="qty-btn" onclick="changeQty('${item.id}', -1)">-</button>
+        <span style="font-weight: 600;">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+// Ajusta changeQty para manejar IDs de texto (como "waffle_171000...")
+function changeQty(productId, delta) {
+  const index = cart.findIndex(item => String(item.id) === String(productId));
+  if (index === -1) return;
+
+  cart[index].qty += delta;
+  if (cart[index].qty <= 0) {
+    cart.splice(index, 1);
+  }
+  updateCartUI();
 }
