@@ -22,7 +22,7 @@ const PRODUCTS = [
     tag: "Nueva Sensación",
     desc: "Waffles crujientes y esponjosos servidos con crema batida, plátano en rodajas, Oreos troceados y salsas de chocolate.",
     toppingsCount: 3,
-    image: "Chocoban.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+    image: "chocoban.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
   {
     id: 2,
