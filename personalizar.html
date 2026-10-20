@@ -129,15 +129,14 @@
             </label>
             <select id="waffleSauce" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; font-family: inherit; background: #fafafa; box-sizing: border-box;">
                 <option value="" selected disabled>Seleccione una salsa/base</option>
-                <option value="Salsa de Frutilla">Salsa de Chocolate</option>
-                <option value="Crema Chantilly">Crema Chantilly</option>
+                <option value="Crema Chantilly" >Crema Chantilly</option>
             </select>
           </div>
 
           <!-- 2. EXTRAS / TOPPINGS -->
           <div style="margin-bottom: 1.5rem;">
             <label style="display: block; font-weight: 700; margin-bottom: 0.5rem; color: #2D2825; font-size: 0.88rem;">
-              2. Agregados 2 Gratis / Extras (500 c/u):
+              2. Agregados 1 Gratis / Extras (500 c/u):
             </label>
             <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem;">
               <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
@@ -158,19 +157,20 @@
                 </span>
               </label>
 
+              </label>
+                <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox" class="waffle-extra" value="Plátano en Rodajas" data-price="500" style="transform: scale(1.2);"> Chubis (Chips de Chocolate)
+                </span>
+              </label>
+
                 </label>
                 <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
                 <span style="display: flex; align-items: center; gap: 0.5rem;">
                   <input type="checkbox" class="waffle-extra" value="Salsa de chocolate" data-price="500" style="transform: scale(1.2);"> Salsa de chocolate
                 </span>
               </label>
-
-              <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
-                <span style="display: flex; align-items: center; gap: 0.5rem;">
-                  <input type="checkbox" class="waffle-extra" value="Crema Chantilly" data-price="500" style="transform: scale(1.2);"> Crema Chantilly
-                </span>
-            </label>
-
+              
                 <label class="extra-item-label" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.7rem 0.8rem; background: #fafafa; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box;">
                 <span style="display: flex; align-items: center; gap: 0.5rem;">
                   <input type="checkbox" class="waffle-extra" value="Syrup" data-price="500" style="transform: scale(1.2);"> Syrup
@@ -210,9 +210,9 @@
   let extraNames = [];
   let extraPrice = 0;
 
-  // Lógica: Máximo 2 incluidos (gratis), los demás cobran $500
+  // Lógica: Máximo 1 incluidos (gratis), los demás cobran $500
   extras.forEach((cb, index) => {
-    const isFree = index < 2; // Los primeros 2 son gratis
+    const isFree = index < 1; // Los primeros son gratis
     const priceUnit = parseInt(cb.dataset.price || "500");
 
     if (isFree) {
