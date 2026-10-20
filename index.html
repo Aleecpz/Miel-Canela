@@ -96,9 +96,12 @@
 
       <!-- Filtros por Categoría -->
       <div class="filter-pills" id="categoryFilters">
-        <button class="filter-btn active" data-category="todos">Todos</button>
+        <!-- <button class="filter-btn active" data-category="todos">Todos</button> -->
         <button class="filter-btn" data-category="waffles">Waffles</button>
         <button class="filter-btn" data-category="bebidas">Bebidas</button>
+        <button type="button" class="filter-btn" onclick="window.location.href='personalizar.html'">
+          Arma tu Waffle
+        </button>
 <!--    <button class="filter-btn" data-category="cookies">Desayunos & Bocados</button>
         <button class="filter-btn" data-category="salados">Salados & Brunch</button> -->
       </div>
@@ -232,7 +235,7 @@
         <!-- Selector de modalidad (Empieza en blanco y deshabilitado) -->
         <select id="custDeliveryType" class="cart-input-select">
           <option value="" selected disabled>- Seleccione una opción -</option>
-          <option value="Retiro en Departamento Vicuña Mackenna">📍 Reparto en Departamento, Edificio Vicuña Mackenna</option>
+          <option value="Reparto en Departamento Vicuña Mackenna">📍 Reparto en Departamento, Edificio Vicuña Mackenna</option>
           <option value="Despacho a Domicilio" selected disabled>🛵 Despacho a Domicilio - Proximamente -</option>
           <option value="" selected disabled hidden>- Seleccione una opción -</option>
         </select>
@@ -252,9 +255,9 @@
         </div>
 
         <!-- CAJA 2: Retiro (Oculta con display: none) -->
-        <div id="pickupGroup" style="display: none;">
-          <input type="text" id="custFloor" placeholder="Numero de piso o referencia (Ej: 2do piso, depto 3)">
-          <select id="custPaymentSelect" class="cart-input-select">
+        <div id="pickupGroup" style="display: none;" required>
+          <input type="text" id="custFloor" placeholder="Numero de piso o referencia (Ej: 2do piso, depto 3)" required>
+          <select id="custPaymentSelect" class="cart-input-select" required>
           <option value="" selected disabled>- Seleccione método de pago -</option>
           <option value="Efectivo">💵 Efectivo</option>
           <option value="Transferencia">💳 Transferencia</option>
@@ -264,8 +267,8 @@
 
 
         <!-- Caja para el vuelto/monto en efectivo (Oculta por defecto) -->
-        <div id="cashGroup" style="display: none; margin-top: 0.5rem;">
-          <input type="text" id="custCashAmount" placeholder="¿Con cuánto pagará? (Ej: $10.000)" class="cart-input">
+        <div id="cashGroup" style="display: none; margin-top: 0.5rem;" >
+          <input type="text" id="custCashAmount" placeholder="¿Con cuánto pagará? (Ej: $10.000)" class="cart-input"required>
         </div>
           <p class="pickup-hint">Te avisaremos por WhatsApp o llamada cuando tu encargo esté listo.</p>
         </div>
@@ -280,6 +283,8 @@
           Enviar Pedido por WhatsApp
         </button>
       </div>
+
+  
   <!-- Importamos los archivos JS al final -->
   <!-- 1. Los datos de los productos -->
   <script src="productos.js"></script>
