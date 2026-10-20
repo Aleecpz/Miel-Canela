@@ -33,7 +33,7 @@ const formatMoney = (amount) => {
 function renderProducts(category = "todos") {
   const grid = document.getElementById("productGrid");
   const filtered = category === "todos" 
-    ? PRODUCTS 
+    ? PRODUCTS
     : PRODUCTS.filter(p => p.category === category);
 
   grid.innerHTML = filtered.map(item => `
@@ -55,23 +55,23 @@ function renderProducts(category = "todos") {
 }
 
 // Renderizar productos en el catálogo
-function renderProducts(category = "waffles2") {
+function renderProducts(category = "todos") {
   const grid = document.getElementById("productGrid");
   if (!grid || typeof PRODUCTS === "undefined") return;
 
-  const filtered = category === "waffles2" 
+  const filtered = (category === "todos" || category === "waffles2")
     ? PRODUCTS 
     : PRODUCTS.filter(p => p.category === category);
 
   grid.innerHTML = filtered.map(item => {
-    // Detecta si es un producto personalizable (ej: Waffle)
-    const isWaffle = item.name.toLowerCase().includes("waffle2") || item.category === "waffles2";
-
-    // Si es Waffle, muestra el botón que redirige a personalizar.html
-    // Si es otro producto, muestra el botón normal de + Agregar
-    const buttonHtml = isWaffle 
+    // Si el producto permite agregar directo al carrito o personalizar
+    const buttonHtml = item.isCustomizable
       ? `<a href="personalizar.html" class="btn-add" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Personalizar</a>`
       : `<button class="btn-add" onclick="addToCart(${item.id})">+ Agregar</button>`;
+
+    const toppingsBadge = item.toppingsCount 
+      ? `<span style="background-color: #FFF3CD; color: #856404; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 12px; display: inline-block; margin-bottom: 0.4rem;">✨ ${item.toppingsCount} Toppings</span>`
+      : '';
 
     return `
       <article class="product-card">
@@ -80,6 +80,7 @@ function renderProducts(category = "waffles2") {
           ${item.tag ? `<span class="card-badge">${item.tag}</span>` : ''}
         </div>
         <div class="card-body">
+          ${toppingsBadge}
           <h3 class="card-title">${item.name}</h3>
           <p class="card-desc">${item.desc || ''}</p>
           <div class="card-footer">
@@ -227,6 +228,19 @@ function checkoutWhatsApp() {
       return;
     }
 
+    if (deliveryType === "Reparto en Departamento Vicuña Mackenna" && !floor) {
+      alert("Por favor ingresa el número de piso o referencia.");
+      return;
+    }
+    if (paymentMethod === "" && !cashAmount) {
+      alert("Por favor selecciona un método de pago.");
+      return;
+    }
+    if (paymentMethod === "Efectivo" && !cashAmount) {
+      alert("Por favor ingresa el monto con el que pagarás en efectivo.");
+      return;
+    }
+
     // 4. DECLARACIÓN INICIAL DE LA VARIABLE TEXT (Aquí se soluciona el error)
     let text = `*¡Hola! Quiero hacer un encargo en Miel & Canela* 🍰\n\n`;
     text += `*Cliente:* ${name}\n`;
@@ -289,7 +303,7 @@ if (deliverySelect) {
       addressGroup.style.display = "block";
       pickupGroup.style.display = "none";
       if (deliveryHint) deliveryHint.style.display = "none";
-    } else if (selected === "Retiro en Departamento Vicuña Mackenna") {
+    } else if (selected === "Reparto en Departamento Vicuña Mackenna") {
       addressGroup.style.display = "none";
       pickupGroup.style.display = "block";
       if (deliveryHint) deliveryHint.style.display = "none";
@@ -546,3 +560,19 @@ function changeQty(productId, delta) {
   }
   updateCartUI();
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Buscar el selector o elemento de la opción
+  const waffleOptionSelect = document.getElementById("waffles2"); // Reemplaza con el ID de tu selector
+
+  if (waffleOptionSelect) {
+    waffleOptionSelect.addEventListener("change", (e) => {
+      // Si el usuario elige la opción de personalizar
+      if (e.target.value === "waffles2") { // Reemplaza por el valor correspondiente
+        // Redirige automáticamente a la página de personalización
+        window.location.href = "personalizar.html";
+      }
+    });
+  }
+});
