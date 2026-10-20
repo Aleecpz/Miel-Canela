@@ -727,3 +727,22 @@ body:has(.cart-drawer.open) .cart-trigger-btn {
   pointer-events: none;
   transform: scale(0.8);
 }
+
+.subfilter-btn {
+  background-color: #f7f7f7;
+  color: #555555;
+  border: 1px solid #e0e0e0;
+  padding: 0.45rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+.subfilter-btn.active {
+  background-color: #C59B27;
+  color: #ffffff;
+  border-color: #C59B27;
+}
