@@ -61,7 +61,7 @@ const PRODUCTS = [
     price: 2000,
     tag: "",
     toppingsCount: 2,
-    desc: "Waffles Excelente para los amantes del chocolate, servidos con crema batida, plátano en rodajas y Salsa de Manjar",
+    desc: "Waffles Excelente para los amantes del Manjar, servidos con crema batida, plátano en rodajas y Salsa de Manjar",
     image: "Bom.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
   {
