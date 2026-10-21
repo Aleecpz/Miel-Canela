@@ -4,6 +4,16 @@ const WHATSAPP_PHONE = "56986593972";
 // Lista de productos de la carta
 const PRODUCTS = [
   // waffles
+    {
+    id: 69,
+    name: "Waffle XL",
+    category: "waffles",
+    price:4500,
+    toppingsCount:4,
+    tag: "Mountroso XL",
+    desc: "Waffle completo cubierto de crema  con Frutilla, Platano, salsa de",
+    image: "XL.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
+  },
   {
     id: 1,
     name: "Waffles Tentación Oreo & Frutilla",
@@ -51,7 +61,7 @@ const PRODUCTS = [
     price: 2000,
     tag: "",
     toppingsCount: 2,
-    desc: "Waffles Excelente para los amantes del chocolate, servidos con crema batida, plátano en rodajas y salsa de chocolate.",
+    desc: "Waffles Excelente para los amantes del chocolate, servidos con crema batida, plátano en rodajas y Salsa de Manjar",
     image: "Bom.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
   {
@@ -84,16 +94,7 @@ const PRODUCTS = [
     desc: "Waffles para los Los amantes del dulce",
     image: "Oreo.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
   },
-  {
-    id: 69,
-    name: "Waffle XL mountro de crema",
-    category: "waffles",
-    price:4500,
-    toppingsCount:4,
-    tag: "Mountroso XL",
-    desc: "Waffle completo cubierto de crema  con Frutilla, Platano, salsa de",
-    image: "XL.jpg" // 👈 Solo guarda tu foto con este nombre en la misma carpeta
-  },
+
   // Bebidas
 
     {
